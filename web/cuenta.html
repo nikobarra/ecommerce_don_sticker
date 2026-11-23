@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Mi cuenta | Don Sticker</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+      <div id="nav-cuenta" class="barra__cuenta"><button class="boton boton--cuenta" type="button" id="btn-ingresar">Ingresar</button></div>
+      <a class="boton boton--carrito" href="/#packs">Seguir comprando</a>
+    </div>
+  </header>
+
+  <main class="pagina contenedor contenedor--angosto" id="contenido">
+    <h1>Mi <span class="prota">cuenta</span></h1>
+
+    <section id="sin-sesion" hidden>
+      <p>Ingresá para ver tus pedidos y seguir su estado.</p>
+      <button class="boton boton--primario" type="button" id="abrir-ingreso">Ingresar o crear mi cuenta</button>
+    </section>
+
+    <div id="con-sesion" hidden>
+      <div class="aviso-pagina" id="aviso-mail" hidden>
+        <span>Todavía no confirmaste tu mail. Te mandamos un enlace cuando creaste la cuenta.</span>
+        <button class="boton boton--claro" type="button" id="reenviar">Reenviarme el enlace</button>
+      </div>
+      <p class="exito" id="mensaje" role="status" hidden></p>
+
+      <h2>Mis pedidos</h2>
+      <div id="pedidos"><p>Cargando tus pedidos…</p></div>
+
+      <h2>Mis datos</h2>
+      <section class="tarjeta-p">
+        <form id="form-datos" novalidate>
+          <p>Tu mail: <strong id="d-mail"></strong></p>
+          <label>Tu nombre <input type="text" id="d-nombre" maxlength="80" autocomplete="name"></label>
+          <p class="error" id="d-error" role="alert" hidden></p>
+          <button class="boton boton--primario" type="submit">Guardar</button>
+        </form>
+      </section>
+
+      <h2>Novedades por mail</h2>
+      <section class="tarjeta-p">
+        <label class="consentimiento">
+          <input type="checkbox" id="c-novedades">
+          <span id="c-texto"></span>
+        </label>
+        <p class="ayuda">Podés cambiar esto cuando quieras. Cada mail trae un enlace para darte de baja con un clic. Más datos en la <a href="/privacidad">política de privacidad</a>.</p>
+      </section>
+
+      <h2>Contraseña</h2>
+      <section class="tarjeta-p" id="seccion-password">
+        <form id="form-password" novalidate>
+          <label>Contraseña actual <input type="password" id="p-actual" autocomplete="current-password"></label>
+          <label>Contraseña nueva (mínimo 10 caracteres) <input type="password" id="p-nueva" autocomplete="new-password"></label>
+          <p class="error" id="p-error" role="alert" hidden></p>
+          <button class="boton boton--primario" type="submit">Cambiar contraseña</button>
+        </form>
+      </section>
+      <p id="sin-password" hidden>Tu cuenta entra con Google, así que no tiene contraseña de Don Sticker.</p>
+
+      <h2>Mis datos personales</h2>
+      <section class="tarjeta-p">
+        <p>Podés bajar una copia de todo lo que guardamos de vos, o eliminar tu cuenta.</p>
+        <p><a class="boton boton--claro" href="/api/cuenta/datos" download>Descargar mis datos</a></p>
+        <form id="form-eliminar" novalidate>
+          <label>Para eliminar tu cuenta, escribí ELIMINAR <input type="text" id="e-confirmacion" autocomplete="off"></label>
+          <p class="ayuda">Se borran tu cuenta y tus consentimientos. Tus pedidos quedan sin tus datos personales.</p>
+          <p class="error" id="e-error" role="alert" hidden></p>
+          <button class="boton boton--peligro" type="submit">Eliminar mi cuenta</button>
+        </form>
+      </section>
+
+      <p style="margin-top:28px"><button class="boton boton--claro" type="button" id="salir">Cerrar sesión</button></p>
+    </div>
+  </main>
+  <script src="js/visita.js"></script>
+  <script src="js/analitica.js"></script>
+  <script src="js/cuenta.js"></script>
+  <script src="js/pagina-cuenta.js"></script>
+</body>
+</html>

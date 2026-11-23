@@ -1,0 +1,8 @@
+# Don Sticker. Todo el sitio público se puede rastrear; solo se deja afuera la API (no tiene contenido para buscadores).
+# Las páginas privadas (cuenta, panel, pago, enlaces de mail) NO se bloquean acá a propósito: llevan «noindex» en una
+# cabecera y en una etiqueta, y un buscador solo puede leer ese «noindex» si tiene permiso de entrar a la página.
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://donsticker.com.ar/sitemap.xml

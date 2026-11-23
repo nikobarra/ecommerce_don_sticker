@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Packs prearmados | Don Sticker</title>
+  <meta name="description" content="Packs prearmados de stickers de vinilo: 10, 25, 50 y 100 stickers surtidos y packs temáticos. Salen más baratos que armarlos vos.">
+  <link rel="canonical" href="https://donsticker.com.ar/packs">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don Sticker">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:url" content="https://donsticker.com.ar/packs">
+  <meta property="og:title" content="Packs prearmados | Don Sticker">
+  <meta property="og:description" content="Packs prearmados de stickers de vinilo: 10, 25, 50 y 100 stickers surtidos y packs temáticos. Salen más baratos que armarlos vos.">
+  <meta property="og:image" content="https://donsticker.com.ar/assets/og-donsticker.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="con-barra-pedido">
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+      <a class="boton boton--claro" href="/#packs">Volver</a>
+      <a class="boton boton--carrito" href="/?carrito=1" id="ir-pedido">Ver mi pedido <span id="ir-pedido-n" class="oculto"></span></a>
+    </div>
+  </header>
+
+  <main class="pagina contenedor" id="contenido">
+    <h1>Packs <span class="prota">prearmados</span></h1>
+    <p class="seccion__bajada">Los arma la familia, con diseños surtidos. Elegí cuál se viene con vos: salen 10% más baratos que armar la misma cantidad a mano, y no se repiten diseños entre los packs de un mismo tamaño.</p>
+
+    <div class="filtros__cats packs__pestanas" id="pestanas" role="group" aria-label="Tamaño de los packs"></div>
+    <p class="catalogo__cuenta" id="packs-cuenta" aria-live="polite"></p>
+    <div class="grilla grilla--packs" id="lista-packs"></div>
+    <p class="nota" style="margin-top:24px">Los diseños de cada pack los elige la casa y no se pueden cambiar. Si querés elegir los tuyos, mirá los <a href="/#catalogo">stickers a elección</a>: desde 10 ya pagás precio de pack.</p>
+  </main>
+
+  <div class="barra-pedido" id="barra-pedido" hidden>
+    <p class="barra-pedido__texto"><strong id="bp-cantidad">0 productos</strong> en tu pedido</p>
+    <a class="boton boton--primario" href="/?carrito=1">Ver mi pedido</a>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/visita.js"></script>
+  <script src="js/packs.js"></script>
+</body>
+</html>

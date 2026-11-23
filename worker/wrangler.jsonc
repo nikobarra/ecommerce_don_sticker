@@ -1,0 +1,27 @@
+// ATENCIÓN: este archivo NO es la configuración con la que se despliega Don Sticker.
+// El despliegue real usa cloudflare.config.ts (comando: cf deploy): ahí están la base D1, las variables de
+// correo y mails, y las rutas que pasan primero por el Worker (/api/* y /baja). Este archivo está
+// desactualizado: si se corriera «wrangler deploy» con él, el sitio se publicaría SIN base de datos.
+// Se conserva solo para que wrangler pueda leer el Worker en comandos de lectura (por ejemplo, tail).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "donsticker",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-13",
+  "assets": {
+    "directory": "../web",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true },
+  "vars": {
+    // Ambiente de PRUEBAS del Correo. Para vender de verdad cambiar a producción:
+    // "https://api.correoargentino.com.ar/micorreo/v1" (con las credenciales de producción).
+    "MICORREO_BASE": "https://apitest.correoargentino.com.ar/micorreo/v1",
+    // Código postal de origen del envío (Balcarce). Confirmar.
+    "CP_ORIGEN": "7620",
+    // Porcentaje que se suma a la tarifa del Correo (0 = tal cual).
+    "RECARGO_PORCENTAJE": "0"
+  }
+  // Secretos (NO se escriben acá): MICORREO_USER, MICORREO_PASSWORD, MICORREO_CUSTOMER_ID.
+}

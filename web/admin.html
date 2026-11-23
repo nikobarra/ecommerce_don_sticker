@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel | Don Sticker</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+      <div id="nav-cuenta" class="barra__cuenta"><button class="boton boton--cuenta" type="button" id="btn-ingresar">Ingresar</button></div>
+    </div>
+  </header>
+
+  <main class="pagina contenedor">
+    <h1>Panel de <span class="prota">pedidos</span></h1>
+
+    <section id="sin-sesion" hidden>
+      <p>Ingresá con tu cuenta de Don Sticker (la de Google con el mail del dueño) para ver los pedidos.</p>
+      <button class="boton boton--primario" type="button" id="abrir-ingreso">Ingresar</button>
+    </section>
+    <p id="sin-permiso" class="error" hidden>Esta cuenta no tiene permiso para ver el panel. Entrá con la cuenta del dueño y confirmá su mail.</p>
+
+    <div id="panel" hidden>
+      <div class="contadores" id="contadores"></div>
+      <p class="exito" id="mensaje" role="status" hidden></p>
+
+      <details id="taller-panel" style="margin:24px 0">
+        <summary><strong>App local de pedidos e impresión</strong></summary>
+        <p>Vinculá solamente una computadora tuya. El permiso permite descargar todos los pedidos y actualizar sus estados durante 7 días.</p>
+        <form id="taller-vincular">
+          <label for="taller-codigo">Código que muestra la app</label>
+          <input id="taller-codigo" maxlength="14" autocomplete="off" placeholder="XXXX-XXXX-XXXX" required>
+          <button class="boton boton--primario" type="submit">Autorizar mi computadora</button>
+        </form>
+        <p id="taller-aviso" role="status"></p>
+        <button class="boton boton--claro" id="taller-recargar" type="button">Ver equipos vinculados</button>
+        <ul id="taller-equipos"></ul>
+      </details>
+
+      <section class="analiticas">
+        <div class="analiticas__cabeza">
+          <h2>Analíticas</h2>
+          <div class="periodo" id="periodo" role="group" aria-label="Período">
+            <button class="chip" type="button" data-dias="0">Hoy</button>
+            <button class="chip" type="button" data-dias="6">7 días</button>
+            <button class="chip" type="button" data-dias="29" aria-pressed="true">30 días</button>
+            <button class="chip" type="button" data-dias="89">90 días</button>
+            <button class="chip" type="button" data-dias="todo">Todo</button>
+            <label>Desde <input type="date" id="a-desde"></label>
+            <label>Hasta <input type="date" id="a-hasta"></label>
+          </div>
+        </div>
+        <div id="analiticas-cuerpo"><p>Cargando…</p></div>
+      </section>
+
+      <section class="novedades-panel" aria-labelledby="nov-titulo">
+        <h2 id="nov-titulo" style="margin-top:34px">Mail de novedades</h2>
+        <p id="nov-estado">Cargando…</p>
+        <p class="novedades-panel__acciones">
+          <a class="boton boton--claro" href="/api/admin/novedades/vista-previa" target="_blank" rel="noopener">Ver vista previa<span class="oculto"> (se abre en otra pestaña)</span></a>
+          <button class="boton boton--claro" type="button" id="nov-prueba">Mandarme una prueba</button>
+        </p>
+        <div id="nov-envios"></div>
+      </section>
+
+      <section class="facturas-panel" aria-labelledby="fact-titulo">
+        <h2 id="fact-titulo" style="margin-top:34px">Facturas</h2>
+        <div id="facturas-cuerpo"><p>Cargando…</p></div>
+      </section>
+
+      <h2 style="margin-top:34px">Pedidos</h2>
+      <p><button class="boton boton--claro" type="button" id="conciliar">Revisar pagos de Mercado Pago</button></p>
+      <p class="exito" id="conciliar-estado" role="status" hidden></p>
+      <dialog class="modal" id="ventana-aviso" aria-labelledby="va-titulo" aria-describedby="va-texto">
+        <div class="modal__cabeza">
+          <h2 id="va-titulo">Aviso</h2>
+          <button class="cerrar" type="button" id="va-cerrar" aria-label="Cerrar">×</button>
+        </div>
+        <div class="modal__cuerpo">
+          <p id="va-texto"></p>
+          <button class="boton boton--primario boton--ancho" type="button" id="va-aceptar">Entendido</button>
+        </div>
+      </dialog>
+      <p style="margin-top:18px">
+        <label>Mostrar:
+          <select id="filtro" style="font:500 1.1rem 'Barlow Condensed',sans-serif;border:3px solid #160000;border-radius:10px;padding:6px 10px;background:#fff">
+            <option value="todos">Todos los pedidos</option>
+          </select>
+        </label>
+      </p>
+      <div class="rejilla-admin" id="pedidos"><p>Cargando…</p></div>
+    </div>
+  </main>
+
+  <script src="js/cuenta.js"></script>
+  <script src="js/pagina-admin.js"></script>
+  <script src="js/taller.js"></script>
+</body>
+</html>

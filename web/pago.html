@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu pago | Don Sticker</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+      <div id="nav-cuenta" class="barra__cuenta"><button class="boton boton--cuenta" type="button" id="btn-ingresar">Ingresar</button></div>
+      <a class="boton boton--carrito" href="/#packs">Ver los packs</a>
+    </div>
+  </header>
+
+  <main class="pagina contenedor contenedor--angosto">
+    <h1 id="titulo">Volviste de <span class="prota">Mercado Pago</span></h1>
+    <p id="mensaje" role="status">Un segundo, que estoy mirando cómo quedó tu pedido…</p>
+
+    <div class="tarjeta-p" id="detalle" hidden>
+      <p><strong id="d-numero"></strong> · <span id="d-estado"></span></p>
+      <p id="d-total"></p>
+    </div>
+
+    <p id="acciones">
+      <a class="boton boton--primario" href="/cuenta">Ver mis pedidos</a>
+      <a class="boton boton--claro" href="/">Volver a la tienda</a>
+    </p>
+  </main>
+  <script src="js/visita.js"></script>
+  <script src="js/analitica.js"></script>
+  <script src="js/cuenta.js"></script>
+  <script src="js/pagina-pago.js"></script>
+</body>
+</html>

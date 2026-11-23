@@ -1,0 +1,44 @@
+# =====================================================================================================
+# Este repositorio contiene SOLO la web de Don Sticker: la carpeta web/ (sitio) y worker/ (servidor).
+# Todo lo demás de la carpeta del proyecto (catálogo con originales de impresión, Media, Docs, Studio,
+# apps locales, fotos de marca, planillas, etc.) queda AFUERA a propósito: se ignora todo y se vuelve
+# a incluir únicamente lo de abajo.
+# =====================================================================================================
+/*
+!/.gitignore
+!/README.md
+!/web/
+!/worker/
+
+# ---- Secretos y credenciales (NUNCA al repositorio). Se cargan como secretos de Cloudflare. -------------
+.dev.vars
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+# Excepción: certificado y clave DESCARTABLES, generados solo para las pruebas automáticas (no son de ARCA ni de nadie).
+!/worker/test/fixtures/
+!/worker/test/fixtures/*
+
+# ---- Dependencias, builds y estado local ------------------------------------------------------------------
+node_modules/
+.cloudflare/
+.wrangler/
+dist/
+coverage/
+
+# ---- Registros, temporales y basura de sistema -----------------------------------------------------------
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+desktop.ini
+.pytest_cache/
+__pycache__/
+.vscode/
+.idea/

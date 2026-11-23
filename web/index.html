@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Don Sticker | Stickers de vinilo con diseños exclusivos</title>
+  <meta name="description" content="Stickers de vinilo con protección UV, resistentes al agua y a los rayones. Diseños exclusivos, por unidad y en packs prearmados. Entregas en Balcarce y Mar del Plata, y envíos a todo el país.">
+  <link rel="canonical" href="https://donsticker.com.ar/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don Sticker">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:url" content="https://donsticker.com.ar/">
+  <meta property="og:title" content="Don Sticker | Stickers de vinilo con diseños exclusivos">
+  <meta property="og:description" content="Stickers de vinilo con protección UV, resistentes al agua y a los rayones. Por unidad y en packs prearmados. Entregas en Balcarce y Mar del Plata, y envíos a todo el país.">
+  <meta property="og:image" content="https://donsticker.com.ar/assets/og-donsticker.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="El Don, sentado en su sillón rojo con un gato en la falda, en la tienda de stickers Don Sticker.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Don Sticker | Stickers de vinilo con diseños exclusivos">
+  <meta name="twitter:description" content="Stickers de vinilo con protección UV, resistentes al agua y a los rayones. Por unidad y en packs prearmados.">
+  <meta name="twitter:image" content="https://donsticker.com.ar/assets/og-donsticker.jpg">
+  <meta name="twitter:image:alt" content="El Don, sentado en su sillón rojo con un gato en la falda, en la tienda de stickers Don Sticker.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://donsticker.com.ar/#organizacion",
+        "name": "Don Sticker",
+        "url": "https://donsticker.com.ar/",
+        "logo": "https://donsticker.com.ar/assets/favicon-180.png",
+        "description": "Stickers de vinilo con protección UV, resistentes al agua y a los rayones, por unidad y en packs prearmados.",
+        "email": "donsticker.ar@gmail.com",
+        "telephone": "+5492266440616",
+        "address": { "@type": "PostalAddress", "addressLocality": "Balcarce", "addressRegion": "Buenos Aires", "addressCountry": "AR" },
+        "areaServed": { "@type": "Country", "name": "Argentina" },
+        "contactPoint": [{ "@type": "ContactPoint", "contactType": "customer support", "email": "donsticker.ar@gmail.com", "telephone": "+5492266440616", "availableLanguage": "es-AR" }]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://donsticker.com.ar/#sitio",
+        "url": "https://donsticker.com.ar/",
+        "name": "Don Sticker",
+        "inLanguage": "es-AR",
+        "publisher": { "@id": "https://donsticker.com.ar/#organizacion" }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
+  <link rel="preload" href="fonts/BarlowCondensed-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="saltar" href="#catalogo">Ir al catálogo</a>
+
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="#inicio" class="barra__logo" aria-label="Don Sticker, inicio">
+        <img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60">
+      </a>
+      <nav class="barra__nav" aria-label="Secciones">
+        <a href="#packs">Packs</a>
+        <a href="#catalogo">A elección</a>
+        <a href="#emprendedores">Emprendé</a>
+        <a href="#a-medida" class="barra__destacado">A medida</a>
+        <a href="#sugerir">Sugerí un diseño</a>
+        <a href="#dudas">Dudas</a>
+      </nav>
+      <div id="nav-cuenta" class="barra__cuenta"><button class="boton boton--cuenta" type="button" id="btn-ingresar">Ingresar</button></div>
+      <button class="boton boton--carrito" id="abrir-carrito" type="button" aria-haspopup="dialog">
+        Mi pedido <span class="contador" id="contador" aria-hidden="true">0</span><span class="oculto" id="contador-texto">, vacío</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero" id="propuesta">
+      <div class="contenedor hero__fila">
+        <img class="hero__don" src="assets/don-logo.webp" alt="Don Sticker: el Don sentado en su sillón rojo con su gato" width="756" height="920" fetchpriority="high">
+        <div class="hero__texto">
+          <p class="hero__lema">Vinilo con protección UV, resistente al agua y a los rayones.</p>
+          <h1>Stickers de vinilo: acá se decora <span class="prota">como corresponde</span></h1>
+          <div class="hero__acciones">
+            <a class="boton boton--primario" href="#packs">Ver los packs</a>
+            <a class="boton boton--claro" href="#catalogo">Elegir uno por uno</a>
+          </div>
+          <p class="hero__cuotas"><strong>3 cuotas sin interés</strong> pagando con Mercado Pago</p>
+          <p class="hero__bajada">Diseños que no vas a ver en el termo de tu vecino. Envíos a todo el país.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="banda" id="banda-seccion" hidden aria-labelledby="banda-titulo">
+      <h2 class="banda__titulo" id="banda-titulo">Lo más vendido y lo último que salió</h2>
+      <div class="banda__ventana">
+        <ul class="banda__pista" id="banda"></ul>
+      </div>
+    </section>
+
+    <section class="franja" aria-label="Lo que ofrece la casa">
+      <div class="contenedor franja__fila">
+        <p><strong data-cantidad-disenos>Cientos de diseños</strong>Bandas, fútbol, series, humor y más.</p>
+        <p><strong>Desde <span data-tramo-minimo>$525</span> cada uno</strong>Elegí más y el precio por sticker baja solo.</p>
+        <p><strong>Envíos a todo el país</strong>Por Correo Argentino. Retiro en <span data-lugares>Balcarce o Mar del Plata</span>.</p>
+      </div>
+    </section>
+
+    <section class="seccion" id="packs">
+      <div class="contenedor">
+        <h2>Packs <span class="prota">prearmados</span></h2>
+        <p class="seccion__bajada">Los arma la familia. Elegí el tamaño y después cuál pack se viene con vos. Salen más baratos que armarlos vos.</p>
+        <div class="grilla grilla--packs" id="grilla-packs"><!--pre:packs--><a class="tarjeta tarjeta--pack tarjeta--enlace" href="/packs#10" data-id="grupo-10" style="--r:-1.5deg">
+        <div class="tarjeta__arte"><img src="assets/packs/tramo-10.webp" alt="" loading="lazy" width="320" height="320"></div>
+        <h3>Packs de 10</h3>
+        <p class="tarjeta__dato">10 packs prearmados de 10 stickers</p>
+        <div class="tarjeta__pie">
+          <span class="tarjeta__precio">$5.670<small>$5.100 transfiriendo</small></span>
+          <span class="agregar agregar--ver" aria-hidden="true">Ver packs</span>
+        </div>
+      </a><a class="tarjeta tarjeta--pack tarjeta--enlace" href="/packs#25" data-id="grupo-25" style="--r:1.5deg">
+        <div class="tarjeta__arte"><img src="assets/packs/tramo-25.webp" alt="" loading="lazy" width="320" height="320"></div>
+        <h3>Packs de 25</h3>
+        <p class="tarjeta__dato">10 packs prearmados de 25 stickers</p>
+        <div class="tarjeta__pie">
+          <span class="tarjeta__precio">$13.390<small>$12.050 transfiriendo</small></span>
+          <span class="agregar agregar--ver" aria-hidden="true">Ver packs</span>
+        </div>
+      </a><a class="tarjeta tarjeta--pack tarjeta--enlace" href="/packs#50" data-id="grupo-50" style="--r:-1.5deg">
+        <div class="tarjeta__arte"><img src="assets/packs/tramo-50.webp" alt="" loading="lazy" width="320" height="320"></div>
+        <h3>Packs de 50</h3>
+        <p class="tarjeta__dato">10 packs prearmados de 50 stickers</p>
+        <div class="tarjeta__pie">
+          <span class="tarjeta__precio">$25.200<small>$22.680 transfiriendo</small></span>
+          <span class="agregar agregar--ver" aria-hidden="true">Ver packs</span>
+        </div>
+      </a><a class="tarjeta tarjeta--pack tarjeta--enlace" href="/packs#100" data-id="grupo-100" style="--r:1.5deg">
+        <div class="tarjeta__arte"><img src="assets/packs/tramo-100.webp" alt="" loading="lazy" width="320" height="320"></div>
+        <h3>Packs de 100</h3>
+        <p class="tarjeta__dato">10 packs prearmados de 100 stickers</p>
+        <div class="tarjeta__pie">
+          <span class="tarjeta__precio">$47.250<small>$42.530 transfiriendo</small></span>
+          <span class="agregar agregar--ver" aria-hidden="true">Ver packs</span>
+        </div>
+      </a><a class="tarjeta tarjeta--pack tarjeta--enlace" href="/packs#tematicos" data-id="grupo-tematicos" style="--r:-1.5deg">
+        <div class="tarjeta__arte"><img src="assets/packs/tema-simpson-10.webp" alt="" loading="lazy" width="320" height="320"></div>
+        <h3>Packs temáticos</h3>
+        <p class="tarjeta__dato">19 packs de una sola temática</p>
+        <div class="tarjeta__pie">
+          <span class="tarjeta__precio">Desde $5.670<small>$5.100 transfiriendo</small></span>
+          <span class="agregar agregar--ver" aria-hidden="true">Ver packs</span>
+        </div>
+      </a><!--/pre:packs--></div>
+      </div>
+    </section>
+
+    <section class="seccion seccion--crema" id="catalogo">
+      <div class="contenedor">
+        <h2>Stickers <span class="prota">a elección</span></h2>
+        <p class="seccion__bajada">Podés elegir cualquiera. Ya sé cuál te vas a llevar.</p>
+        <div class="escalones" id="escalones"><!--pre:escalones-->
+    <div class="escalon">
+      <p class="escalon__cant">1 a 9 a elección</p>
+      <p class="escalon__precio">$700</p>
+      <p class="escalon__nota">cada uno. Elegís los diseños.</p>
+      <p class="escalon__transferencia">$630 por transferencia</p>
+    </div>
+    <div class="escalon">
+      <p class="escalon__cant">10 a 24 a elección</p>
+      <p class="escalon__precio">$630</p>
+      <p class="escalon__nota">cada uno. Elegís los diseños.</p>
+      <p class="escalon__transferencia">$567 por transferencia</p>
+    </div>
+    <div class="escalon">
+      <p class="escalon__cant">25 a 49 a elección</p>
+      <p class="escalon__precio">$595</p>
+      <p class="escalon__nota">cada uno. Elegís los diseños.</p>
+      <p class="escalon__transferencia">$536 por transferencia</p>
+    </div>
+    <div class="escalon">
+      <p class="escalon__cant">50 a 99 a elección</p>
+      <p class="escalon__precio">$560</p>
+      <p class="escalon__nota">cada uno. Elegís los diseños.</p>
+      <p class="escalon__transferencia">$504 por transferencia</p>
+    </div>
+    <div class="escalon escalon--destacado">
+      <p class="escalon__cant">100 o más a elección</p>
+      <p class="escalon__precio">$525</p>
+      <p class="escalon__nota">cada uno. Elegís los diseños.</p>
+      <p class="escalon__transferencia">$473 por transferencia</p>
+    </div><!--/pre:escalones--></div>
+        <div class="filtros">
+          <div class="filtros__cats" id="categorias" role="group" aria-label="Filtrar por temática"></div>
+          <label class="filtro-movil">
+            <span>Temática</span>
+            <select id="categoria-select"></select>
+          </label>
+          <label class="buscador">
+            <span class="oculto">Buscar un diseño</span>
+            <input type="search" id="buscar" placeholder="Buscar un diseño" autocomplete="off">
+          </label>
+          <label class="orden">
+            <span>Ordenar</span>
+            <select id="orden">
+              <option value="novedades">Más nuevos primero</option>
+              <option value="nombre">Nombre (A a Z)</option>
+            </select>
+          </label>
+        </div>
+        <noscript><p class="vacio"><!--pre:sinjs-->Para elegir diseños y armar el pedido hace falta JavaScript. Si no lo tenés activado, escribinos por WhatsApp al <a href="https://wa.me/5492266440616">+54 9 2266 440616</a> o por mail a <a href="mailto:donsticker.ar@gmail.com">donsticker.ar@gmail.com</a> y te ayudamos con el pedido.<!--/pre:sinjs--></p></noscript>
+        <p class="catalogo__cuenta" id="catalogo-cuenta"></p>
+        <div class="grilla" id="grilla" tabindex="-1"></div>
+        <p class="vacio" id="sin-resultados" hidden>No encontré ese diseño. Probá con otra palabra.</p>
+        <div class="ver-mas" id="ver-mas" hidden><button class="boton boton--claro" type="button" id="btn-ver-mas">Ver más diseños</button></div>
+        <nav class="paginas" id="paginas" aria-label="Páginas del catálogo" hidden></nav>
+      </div>
+    </section>
+
+    <section class="seccion" id="emprendedores" aria-labelledby="emprendedores-titulo">
+      <div class="contenedor emprende">
+        <h2 id="emprendedores-titulo">Emprendé con <span class="prota">stickers</span></h2>
+        <p class="a-medida__intro">Un sticker te sale desde <strong>$425</strong>. En ferias y comercios se vende entre <strong>$1.000 y $1.500</strong>. Hacé la cuenta… nosotros ya la hicimos.</p>
+        <ul class="a-medida__lista">
+          <li><strong>Empezás con poco.</strong> Un Pack de 10 sale $5.100 por transferencia. Probás, vendés y recién ahí agrandás.</li>
+          <li><strong>Margen de verdad.</strong> Vendiendo a $1.000, ganás $575 por sticker en el Pack de 100. A $1.500, $1.075.</li>
+          <li><strong>Diseños que se piden.</strong> Rock, humor argentino, series, Mafalda, fútbol y más. Packs surtidos o temáticos, ya armados.</li>
+          <li><strong>Se guarda en una carpeta.</strong> Livianos, sin local ni stock grande. Ideales para ferias, kioscos, librerías y regalerías.</li>
+        </ul>
+
+        <h3 class="emprende__sub">Cuánto te cuesta y cuánto ganás por sticker</h3>
+        <p class="emprende__texto">Precios de los packs prearmados pagando por transferencia. «Ganás a $1.000» es lo que te queda por sticker si lo vendés a ese precio.</p>
+        <div class="tabla-scroll">
+          <table class="tabla" id="emprende-tabla-costo">
+            <caption class="oculto">Costo por sticker según el pack y ganancia por sticker vendido a $1.000, $1.200 y $1.500</caption>
+            <thead><tr><th scope="col">Pack</th><th scope="col" class="num">Total</th><th scope="col" class="num">Te cuesta c/u</th><th scope="col" class="num">Ganás a $1.000</th><th scope="col" class="num">Ganás a $1.200</th><th scope="col" class="num">Ganás a $1.500</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Pack de 10</th><td class="num">$5.100</td><td class="num">$510</td><td class="num">$490</td><td class="num">$690</td><td class="num">$990</td></tr>
+              <tr><th scope="row">Pack de 25</th><td class="num">$12.050</td><td class="num">$482</td><td class="num">$518</td><td class="num">$718</td><td class="num">$1.018</td></tr>
+              <tr><th scope="row">Pack de 50</th><td class="num">$22.680</td><td class="num">$454</td><td class="num">$546</td><td class="num">$746</td><td class="num">$1.046</td></tr>
+              <tr><th scope="row">Pack de 100</th><td class="num">$42.530</td><td class="num">$425</td><td class="num">$575</td><td class="num">$775</td><td class="num">$1.075</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="emprende__sub">Metas realistas con un Pack de 100</h3>
+        <p class="emprende__texto">Pagás $42.530 y retirás en Balcarce o Mar del Plata. No hace falta vender todo para ganar: con 43 stickers a $1.000 ya recuperaste lo invertido.</p>
+        <div class="tabla-scroll">
+          <table class="tabla" id="emprende-tabla-metas">
+            <caption class="oculto">Ganancia según cuántos stickers vendas del Pack de 100 y a qué precio</caption>
+            <thead><tr><th scope="col">Si vendés…</th><th scope="col" class="num">A $1.000</th><th scope="col" class="num">A $1.200</th><th scope="col" class="num">A $1.500</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">50 stickers</th><td class="num">$7.470</td><td class="num">$17.470</td><td class="num">$32.470</td></tr>
+              <tr><th scope="row">70 stickers</th><td class="num">$27.470</td><td class="num">$41.470</td><td class="num">$62.470</td></tr>
+              <tr><th scope="row">Los 100</th><td class="num">$57.470</td><td class="num">$77.470</td><td class="num">$107.470</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="a-medida__nota emprende__nota">Si te lo enviamos, restale el envío a la ganancia: $14.000, $19.000 o $24.000 según tu zona. Con $1.000 por sticker y envío a zona 1, recuperás el pack vendiendo 57. Son cuentas de ejemplo con los precios de venta que se ven en ferias y comercios, no una promesa de ganancia: depende de cuánto y dónde vendas. Vos elegís el precio al que vendés.</p>
+        <div class="emprende__acciones">
+          <a class="boton boton--primario" href="/packs">Ver los packs</a>
+          <a class="boton boton--claro" href="https://wa.me/5492266440616?text=Hola%21%20Quiero%20emprender%20con%20stickers" target="_blank" rel="noopener">Consultar por WhatsApp<span class="oculto"> (se abre en otra pestaña)</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion" id="a-medida" aria-labelledby="a-medida-titulo">
+      <div class="contenedor a-medida">
+        <div class="a-medida__texto">
+          <h2 id="a-medida-titulo">Stickers <span class="prota">a medida</span></h2>
+          <p class="a-medida__intro">Nos mandás una foto y la idea, te mostramos una propuesta y, si te gusta, la imprimimos.</p>
+          <ul class="a-medida__lista">
+            <li><strong>Mascotas y familia.</strong> Tu perro, tu gato, tu novio, mamá, papá o la abuela, como personajes.</li>
+            <li><strong>El estilo que quieras.</strong> Caricatura, animado tipo Pixar, retro, dibujo a mano o inspirado en tu serie favorita.</li>
+            <li><strong>Emprendimientos.</strong> Tu logo y tu marca, para los envíos, el local o el packaging.</li>
+          </ul>
+        </div>
+        <div class="a-medida__pedido">
+          <p class="a-medida__precio">Desde <strong data-unitario>$700</strong> cada uno, igual que un sticker común. <span data-unitario-transferencia>$630</span> por transferencia.</p>
+          <p class="a-medida__nota">Despachamos desde 48 horas después de que apruebes el diseño y pagues.</p>
+          <a class="boton boton--primario boton--ancho" href="https://wa.me/5492266440616?text=Hola%21%20Quiero%20un%20sticker%20a%20medida" target="_blank" rel="noopener">Pedir por WhatsApp<span class="oculto"> (se abre en otra pestaña)</span></a>
+          <p class="a-medida__nota">Tus fotos se usan solo para tu diseño. Solo mostramos el diseño final en la web o en redes si nos autorizás por escrito, y lo retiramos cuando nos pidas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion seccion--crema" id="sugerir" aria-labelledby="sugerir-titulo">
+      <div class="contenedor contenedor--angosto">
+        <h2 id="sugerir-titulo">Sugerí un <span class="prota">diseño</span></h2>
+        <p>¿Hay un diseño que no encontrás? Contanoslo. Lo leo yo… y si es bueno, se hace.</p>
+        <div class="tarjeta-p" id="sug-caja">
+          <p id="sug-estado">Un momento…</p>
+          <p class="ayuda" id="sug-requisitos">Para sugerir necesitás una cuenta, el mail confirmado y las novedades activadas.</p>
+          <div id="sug-acciones"></div>
+          <form id="sug-form" novalidate hidden>
+            <label>Tu idea <textarea id="sug-idea" rows="4" maxlength="600" placeholder="Por ejemplo: un carpincho tomando mate con la bandera argentina."></textarea></label>
+            <label>Una referencia, si tenés (opcional) <input type="text" id="sug-ref" maxlength="200" placeholder="Un nombre, una banda, un enlace…"></label>
+            <p class="error" id="sug-error" role="alert" hidden></p>
+            <button class="boton boton--primario" type="submit" id="sug-enviar">Enviar mi sugerencia</button>
+          </form>
+          <p class="exito" id="sug-ok" role="status" hidden></p>
+          <p class="ayuda">Tu sugerencia no se guarda en la web: me llega por mail, con tu nombre y tu mail para poder responderte. Más datos en la <a href="/privacidad">política de privacidad</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion" id="dudas">
+      <div class="contenedor contenedor--angosto">
+        <h2>Las <span class="prota">dudas</span> de siempre</h2>
+
+        <h3 class="dudas__grupo">Los stickers</h3>
+        <details>
+          <summary>¿Cuánto salen?</summary>
+          <p>A elección: <span data-unitario>$700</span> cada uno. Cuantos más elegís, menos pagás por sticker: desde 10, 25, 50 y 100 stickers a elección, <strong>todo tu pedido</strong> pasa al precio por unidad de ese tramo (hasta <span data-tramo-minimo>$525</span> cada uno). Lo ves en la tabla de más abajo y se aplica solo en el carrito.</p>
+          <p>Los packs prearmados salen 10% menos que armar la misma cantidad vos. Esos son los precios de lista. <strong>Pagando por transferencia hay 10% de descuento</strong>, en los stickers a elección y en los packs; se aplica solo en el carrito cuando elegís transferencia.</p>
+        </details>
+        <details>
+          <summary>¿Puedo elegir los stickers de un pack?</summary>
+          <p>No. Los packs vienen prearmados por la familia. Si querés elegir, comprás los stickers a elección: desde 10 stickers ya pagás precio de pack.</p>
+        </details>
+        <details>
+          <summary>¿Aguantan el agua?</summary>
+          <p>Sí. Son de vinilo con protección UV, resistentes al agua y a los rayones. Para que duren más, pegalos sobre una superficie limpia y seca.</p>
+        </details>
+        <details>
+          <summary>¿De qué material son?</summary>
+          <p>Vinilo blanco mate, blanco brillante o tornasolado. Los stickers a elección y los packs se fabrican según el material que haya en stock en cada momento, así que no podés elegir el material en un pedido común. Si necesitás un material en particular, lo elegís solo en los pedidos personalizados por mayor.</p>
+        </details>
+
+        <h3 class="dudas__grupo">Pedir y pagar</h3>
+        <details>
+          <summary>¿Cómo hago el pedido?</summary>
+          <p>Elegís un pack prearmado o tus stickers uno por uno, abrís «Mi pedido», decís cómo querés pagar y tocás «Confirmar mi pedido». Si todavía no tenés cuenta, la creás en el momento. Tu pedido queda guardado con un número y te mandamos el detalle por mail. Si elegiste Mercado Pago, te llevamos a pagar ahí mismo; si elegiste transferencia, avisame por WhatsApp y te respondo con los datos.</p>
+        </details>
+        <details>
+          <summary>¿Necesito tener una cuenta?</summary>
+          <p>Sí, para hacer el pedido. Te lleva un minuto: con tu mail y una contraseña, o directo con tu cuenta de Google. Con la cuenta seguís el estado de cada pedido y ves todo tu historial de compras.</p>
+        </details>
+        <details>
+          <summary>¿Cómo se paga?</summary>
+          <p>De dos maneras, y las elegís en el carrito:</p>
+          <p><strong>Por transferencia bancaria</strong>, con descuento. Te mandamos los datos después de recibir tu pedido y nos avisás cuando transferiste.</p>
+          <p><strong>Con Mercado Pago</strong>, en el momento: tarjeta de crédito, débito, efectivo o dinero en cuenta. <strong>Tenés 3 cuotas sin interés.</strong> Te llevamos al sitio de Mercado Pago y volvés. Cuando se acredita, tu pedido pasa solo a «Pago confirmado».</p>
+          <p>En los dos casos, <strong>la web no guarda ni ve los datos de tu tarjeta ni de tu cuenta bancaria</strong>: de eso se encarga Mercado Pago en su propio sitio.</p>
+        </details>
+        <details>
+          <summary>¿Dan factura?</summary>
+          <p>Sí. Cuando pagás con Mercado Pago, te llega por mail la factura electrónica de tu compra apenas se acredita el pago. Si necesitás factura por otro medio de pago, escribinos a donsticker.ar@gmail.com.</p>
+        </details>
+        <details>
+          <summary>¿Cómo sigo mi pedido?</summary>
+          <p>Entrá a «Mi cuenta». Ahí ves cada pedido y por dónde va: Recibido, Pago confirmado, Preparando, Despachado y Entregado. Cada vez que cambia de estado te avisamos por mail, y cuando sale con el Correo Argentino va el número de seguimiento.</p>
+        </details>
+
+        <h3 class="dudas__grupo">Envíos y entrega</h3>
+        <details>
+          <summary>¿Cuánto tardan en despacharlo?</summary>
+          <p>Despachamos desde <strong>48 horas</strong> después de aprobado el pago, en todos los pedidos. Los stickers a medida empiezan a contar cuando aprobás el diseño y pagás.</p>
+        </details>
+        <details>
+          <summary>¿Hacen envíos?</summary>
+          <p>Sí, a todo el país por Correo Argentino. El costo del envío corre por cuenta del comprador y depende de la provincia de destino. El valor exacto lo ves en el carrito antes de pagar.</p>
+        </details>
+        <details>
+          <summary>¿Puedo retirar en persona?</summary>
+          <p>Sí, sin costo. Tenemos puntos de entrega en <span data-lugares>Balcarce o Mar del Plata</span>. Lo coordinamos cuando confirmamos tu pedido.</p>
+        </details>
+
+        <h3 class="dudas__grupo">Cancelar y cambios</h3>
+        <details>
+          <summary>¿Puedo cancelar mi pedido?</summary>
+          <p>Sí, <strong>hasta que lo despachemos</strong>. Usá el <a href="/arrepentimiento">botón de arrepentimiento</a> (también está al pie de la página) o entrá a «Mi cuenta» y tocá «Arrepentirme y cancelar». No tiene costo y no hace falta que nos digas por qué. Si ya habías pagado, te devolvemos el importe: te escribimos para coordinarlo.</p>
+        </details>
+        <details>
+          <summary>¿Y si mi pedido ya fue despachado?</summary>
+          <p>Ya no se cancela desde la web, pero tenés <strong>10 días corridos desde que lo recibís</strong> para arrepentirte, con el producto sin uso y en su estado original. Escribinos con el número de pedido por WhatsApp o por mail y lo resolvemos.</p>
+        </details>
+        <details>
+          <summary>¿Y si llega con una falla o no es lo que pedí?</summary>
+          <p>Escribinos con el número de pedido y una foto, y lo resolvemos: reposición, cambio o devolución, según corresponda.</p>
+        </details>
+
+        <h3 class="dudas__grupo">Tu cuenta y tus datos</h3>
+        <details>
+          <summary>¿Cómo recupero mi contraseña?</summary>
+          <p>Tocá «Ingresar» y después «Olvidé mi contraseña». Te mandamos un enlace por mail para elegir una nueva (vale una hora). Si creaste tu cuenta con Google, entrás con el botón «Continuar con Google» y no necesitás contraseña.</p>
+        </details>
+        <details>
+          <summary>¿Me van a mandar publicidad?</summary>
+          <p>Solo si vos querés. La casilla de novedades viene sin marcar. Si la marcás, te enterás antes que nadie de los diseños nuevos, recibís cupones de descuento y entrás a las promociones exclusivas, por mail y como máximo una vez por semana. Cada mail trae un enlace para darte de baja con un clic. También lo cambiás cuando quieras desde «Mi cuenta».</p>
+        </details>
+        <details>
+          <summary>¿Qué hacen con mis datos? ¿Puedo borrarlos?</summary>
+          <p>Los usamos solo para tu cuenta, tus pedidos y, si lo aceptaste, las novedades. Desde «Mi cuenta» descargás una copia de todo lo que guardamos de vos o eliminás tu cuenta cuando quieras; tus pedidos quedan sin tus datos personales. Los detalles están en la <a href="/privacidad">política de privacidad</a>.</p>
+        </details>
+        <details>
+          <summary>¿Cómo los contacto?</summary>
+          <p>Por WhatsApp al <a data-whatsapp href="https://wa.me/5492266440616" target="_blank" rel="noopener">+54 9 2266 440616</a> o por mail a <a data-email-enlace href="mailto:donsticker.ar@gmail.com">donsticker.ar@gmail.com</a>. Contestamos lo antes posible.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="barra-pedido" id="barra-pedido" hidden>
+    <p class="barra-pedido__texto"><strong id="bp-cantidad">0 productos</strong> <span id="bp-total"></span></p>
+    <button class="boton boton--primario" type="button" id="bp-abrir">Ver mi pedido</button>
+  </div>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img class="pie__eslogan" src="assets/eslogan.svg" alt="No es personal, son solo stickers" width="290" height="150" loading="lazy">
+      <p>Don Sticker. Stickers de vinilo, por unidad y por pack. Puntos de entrega en <span data-lugares>Balcarce o Mar del Plata</span> y envíos a todo el país.</p>
+      <p class="pie__legal"><a class="boton boton--claro" href="/arrepentimiento">Botón de arrepentimiento</a></p>
+      <p class="pie__legal"><a href="/privacidad">Política de privacidad</a> · <a href="/terminos">Términos y condiciones</a> · <a href="/cuenta">Mi cuenta</a></p>
+      <p class="pie__legal"><a href="https://autogestion.produccion.gob.ar/consumidores" target="_blank" rel="noopener">Defensa de las y los Consumidores. Para reclamos ingrese aquí.</a></p>
+      <p class="pie__legal pie__fiscal"><a href="http://qr.afip.gob.ar/?qr=pWhM3SwcWtVmXf2-YBlGBA,," target="_F960AFIPInfo" rel="noopener"><img src="assets/data-fiscal.jpg" alt="Data Fiscal: datos fiscales de Don Sticker en ARCA (se abre en otra pestaña)" width="120" height="164" loading="lazy"></a></p>
+      <p class="pie__legal pie__credito">Web desarrollada por <a href="https://www.duckia.com.ar/" target="_blank" rel="noopener">duckia.com.ar<span class="oculto"> (se abre en otra pestaña)</span></a></p>
+    </div>
+  </footer>
+
+  <!-- Anuncios para lectores de pantalla (carrito, filtros). Uno por contexto: con el carrito abierto, el resto de la página está inerte. -->
+  <p class="oculto" id="anuncio" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <!-- El carrito es un <dialog> nativo: el navegador se ocupa del foco, la tecla Escape, el fondo inerte y de devolver el foco. -->
+  <dialog class="carrito" id="carrito" aria-labelledby="carrito-titulo">
+    <div class="carrito__caja">
+      <div class="carrito__cabeza">
+        <h2 id="carrito-titulo">Mi pedido</h2>
+        <button class="cerrar" id="cerrar-carrito" type="button" aria-label="Cerrar el pedido">×</button>
+      </div>
+      <div class="carrito__cuerpo">
+        <p class="oculto" id="anuncio-carrito" role="status" aria-live="polite" aria-atomic="true"></p>
+        <p class="vacio" id="carrito-vacio">Todavía no elegiste nada. Ese termo sigue pelado.</p>
+        <ul class="lineas" id="lineas"></ul>
+        <div id="carrito-detalle" hidden>
+          <p class="aviso" id="aviso-escalon" hidden></p>
+          <dl class="totales">
+            <div id="fila-packs"><dt id="t-packs-detalle"></dt><dd id="t-packs"></dd></div>
+            <div id="fila-sueltos"><dt id="t-sueltos-detalle"></dt><dd id="t-sueltos"></dd></div>
+            <div id="fila-descuento" class="totales__descuento" hidden><dt>Descuento por transferencia</dt><dd id="t-descuento"></dd></div>
+            <div id="fila-subtotal" hidden><dt>Subtotal</dt><dd id="t-subtotal"></dd></div>
+            <div><dt>Envío</dt><dd id="t-envio"></dd></div>
+            <div class="totales__total"><dt>Total</dt><dd id="t-total"></dd></div>
+          </dl>
+          <form id="form-pedido" novalidate>
+            <label>Tu nombre
+              <input type="text" id="f-nombre" autocomplete="name" required aria-required="true">
+            </label>
+            <fieldset id="campo-pago" hidden>
+              <legend>¿Cómo querés pagar?</legend>
+              <div id="opciones-pago"></div>
+              <p class="nota" id="nota-pago" hidden></p>
+            </fieldset>
+            <fieldset>
+              <legend>Entrega</legend>
+              <div id="opciones-entrega"></div>
+            </fieldset>
+            <label id="campo-provincia" hidden>Provincia
+              <select id="f-provincia" autocomplete="address-level1" aria-required="true"></select>
+            </label>
+            <label id="campo-cp" hidden>Código postal (4 números)
+              <input type="text" id="f-cp" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="7600" aria-required="true">
+            </label>
+            <label id="campo-calle" hidden>Calle y número
+              <input type="text" id="f-calle" autocomplete="address-line1" maxlength="120" aria-required="true">
+            </label>
+            <label id="campo-destino" hidden>Localidad
+              <input type="text" id="f-destino" autocomplete="address-level2" maxlength="120" aria-required="true">
+            </label>
+            <label>Algo que quieras aclarar (opcional)
+              <textarea id="f-notas" rows="2" maxlength="300"></textarea>
+            </label>
+            <p class="error" id="form-error" role="alert" hidden></p>
+            <button class="boton boton--primario boton--ancho" type="submit" id="btn-confirmar">Confirmar mi pedido</button>
+            <p class="nota" id="nota-envio" hidden>El costo del envío depende de tu provincia. Lo ves acá, con el total, antes de pagar.</p>
+            <p class="nota" id="nota-medio">No se paga acá. Te respondemos con los datos para la transferencia. Tu pedido queda guardado en tu cuenta.</p>
+          </form>
+        </div>
+        <div id="pedido-hecho" class="pedido-hecho" hidden>
+          <h3 id="ph-titulo" tabindex="-1">Recibí tu pedido <span class="prota" id="ph-numero"></span></h3>
+          <p>Quedate tranquilo: de esto me ocupo yo.</p>
+          <dl class="totales">
+            <div><dt>Total</dt><dd id="ph-total"></dd></div>
+            <div><dt>Entrega</dt><dd id="ph-envio"></dd></div>
+          </dl>
+          <p id="ph-texto">Avisame por WhatsApp para coordinar el pago. Te mandé el detalle por mail y lo podés seguir en tu cuenta.</p>
+          <button class="boton boton--primario boton--ancho" id="ph-reintentar" type="button" hidden>Reintentar el pago con Mercado Pago</button>
+          <a class="boton boton--primario boton--ancho" id="ph-whatsapp" href="#" target="_blank" rel="noopener">Avisar por WhatsApp<span class="oculto"> (se abre en otra pestaña)</span></a>
+          <a class="boton boton--claro boton--ancho" href="/cuenta">Ver mis pedidos</a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/data.js"></script>
+  <script src="js/catalogo.js"></script>
+  <script src="js/visita.js"></script>
+  <script src="js/analitica.js"></script>
+  <script src="js/cuenta.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/banda.js"></script>
+  <script src="js/sugerencias.js"></script>
+  <script src="js/aparecer.js"></script>
+</body>
+</html>

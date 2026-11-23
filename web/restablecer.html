@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Elegí tu contraseña | Don Sticker</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-accion="restablecer">
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+    </div>
+  </header>
+  <main class="pagina contenedor contenedor--angosto">
+    <h1>Elegí tu <span class="prota">contraseña</span></h1>
+    <section class="tarjeta-p" id="formulario">
+      <form id="form" novalidate>
+        <label>Contraseña nueva (mínimo 10 caracteres) <input type="password" id="nueva" autocomplete="new-password" required></label>
+        <p class="error" id="error" role="alert" hidden></p>
+        <button class="boton boton--primario" type="submit">Guardar contraseña</button>
+      </form>
+    </section>
+    <p class="exito" id="listo" role="status" hidden></p>
+    <p id="ingresar" hidden><a class="boton boton--primario" href="/cuenta">Ingresar a mi cuenta</a></p>
+  </main>
+  <script src="js/cuenta.js"></script>
+  <script src="js/pagina-token.js"></script>
+</body>
+</html>

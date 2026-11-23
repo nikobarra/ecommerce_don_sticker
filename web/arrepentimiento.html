@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Botón de arrepentimiento | Don Sticker</title>
+  <meta name="description" content="Cancelá tu compra en Don Sticker mientras todavía no se haya despachado, sin costo y sin dar explicaciones.">
+  <link rel="canonical" href="https://donsticker.com.ar/arrepentimiento">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don Sticker">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:url" content="https://donsticker.com.ar/arrepentimiento">
+  <meta property="og:title" content="Botón de arrepentimiento | Don Sticker">
+  <meta property="og:description" content="Cancelá tu compra en Don Sticker mientras todavía no se haya despachado, sin costo y sin dar explicaciones.">
+  <meta property="og:image" content="https://donsticker.com.ar/assets/og-donsticker.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a href="/" class="barra__logo" aria-label="Don Sticker, inicio"><img src="assets/logo-horizontal.svg" alt="Don Sticker" width="165" height="60"></a>
+      <div id="nav-cuenta" class="barra__cuenta"><button class="boton boton--cuenta" type="button" id="btn-ingresar">Ingresar</button></div>
+      <a class="boton boton--carrito" href="/#packs">Ver los packs</a>
+    </div>
+  </header>
+
+  <main class="pagina contenedor contenedor--angosto">
+    <h1>Botón de <span class="prota">arrepentimiento</span></h1>
+    <p>Si te arrepentiste de tu compra, podés cancelarla desde acá <strong>mientras todavía no la hayamos despachado</strong>. No tiene costo y no hace falta que nos digas por qué. Si ya habías pagado, te devolvemos el importe.</p>
+    <p>Si tu pedido ya salió, no se cancela desde esta página, pero conservás tu <a href="/terminos">derecho de revocación de 10 días</a> desde que lo recibís: escribinos a <a href="mailto:donsticker.ar@gmail.com">donsticker.ar@gmail.com</a> con tu número de pedido.</p>
+
+    <section id="sin-sesion" hidden>
+      <p>Para encontrar tu pedido, ingresá con la cuenta con la que lo hiciste.</p>
+      <button class="boton boton--primario" type="button" id="abrir-ingreso">Ingresar</button>
+    </section>
+
+    <div id="con-sesion" hidden>
+      <p class="exito" id="mensaje" role="status" hidden></p>
+      <div id="pedidos"><p>Cargando tus pedidos…</p></div>
+    </div>
+  </main>
+  <script src="js/visita.js"></script>
+  <script src="js/analitica.js"></script>
+  <script src="js/cuenta.js"></script>
+  <script src="js/pagina-arrepentimiento.js"></script>
+</body>
+</html>
