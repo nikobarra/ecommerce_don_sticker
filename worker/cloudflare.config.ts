@@ -1,10 +1,13 @@
-import { bindings, defineConfig } from "cf/config";
+import { bindings, defineConfig, triggers } from "cf/config";
 
 export default defineConfig({
 	worker: {
 		name: "donsticker",
 		compatibilityDate: "2026-11-13",
 		entrypoint: "src/index.js",
+		// Tarea periódica cada 15 min (scheduled en src/index.js): reintentos de facturas, conciliación de pagos,
+		// recordatorios, limpieza y mail semanal. Verificada activa en producción el 23/11/2026.
+		triggers: [triggers.scheduled({ schedule: "*/15 * * * *" })],
 		observability: {
 			enabled: true,
 		},
