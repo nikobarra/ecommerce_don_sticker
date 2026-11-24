@@ -577,11 +577,11 @@ button.tarjeta__arte img { transition: transform .2s ease; }
 .vuelo { position: fixed; z-index: 300; pointer-events: none; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .35)); }
 
 /* ---------- Barra de progreso hacia el siguiente precio por cantidad ---------- */
-.progreso { margin-top: 16px; display: grid; gap: 8px; }
-.progreso__texto { font-weight: 700; line-height: 1.2; }
-.progreso__pista { height: 16px; border: var(--borde); border-radius: 999px; background: var(--blanco); overflow: hidden; }
-.progreso__barra { height: 100%; width: 0; background: repeating-linear-gradient(135deg, var(--rojo) 0 12px, #d40000 12px 24px); border-radius: 999px; transition: width .45s cubic-bezier(.3, 1.2, .5, 1); }
-.progreso--completo .progreso__barra { background: #1f8a3b; }
+.meta { margin-top: 16px; display: grid; gap: 8px; }
+.meta__texto { font-weight: 700; line-height: 1.2; }
+.meta__pista { height: 16px; border: var(--borde); border-radius: 999px; background: var(--blanco); overflow: hidden; }
+.meta__barra { height: 100%; width: 0; background: repeating-linear-gradient(135deg, var(--rojo) 0 12px, #d40000 12px 24px); border-radius: 999px; transition: width .45s cubic-bezier(.3, 1.2, .5, 1); }
+.meta--completa .meta__barra { background: #1f8a3b; }
 .bp-progreso { position: absolute; left: 0; right: 0; top: 0; height: 5px; background: color-mix(in srgb, var(--negro) 12%, transparent); overflow: hidden; }
 .bp-progreso span { display: block; height: 100%; width: 0; background: var(--rojo); transition: width .45s cubic-bezier(.3, 1.2, .5, 1); }
 
@@ -615,7 +615,7 @@ button.tarjeta__arte img { transition: transform .2s ease; }
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
   .carrito[open], .modal[open], .carrito[open]::backdrop, .modal[open]::backdrop, .rebota, .tarjeta .cantidad, .tarjeta__arte.cargando, .esqueleto { animation: none !important; }
-  .vista__arte img, .progreso__barra, .bp-progreso span { transition: none !important; }
+  .vista__arte img, .meta__barra, .bp-progreso span { transition: none !important; }
 }
 
 /* El código del diseño en el carrito: texto claro sobre su chip (antes heredaba el rojo oscuro de «small»). */

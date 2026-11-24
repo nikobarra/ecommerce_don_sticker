@@ -391,7 +391,7 @@
     const mini = $("#bp-progreso-barra");
     if (mini) mini.style.width = pct + "%";
     caja.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(pct));
-    caja.classList.toggle("progreso--completo", !sig);
+    caja.classList.toggle("meta--completa", !sig);
   }
 
   // El texto de abajo y el botón dicen lo que realmente va a pasar según cómo se paga.
