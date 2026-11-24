@@ -26,6 +26,7 @@ import { pedidoPublico } from "./pedidos.js";
 import { envioDefinitivo } from "./envio.js";
 import { enviarSinFallar, mailCambioEstado, mailAvisoPago, urlSitio } from "./mail.js";
 import { facturarSinFallar } from "./facturacion.js";
+import { avisarCambioDePedido } from "./push.js";
 
 const API = "https://api.mercadopago.com";
 const vacio = (status = 200, extra = {}) => new Response(null, { status, headers: extra });
@@ -263,6 +264,7 @@ export async function aplicarPago(env, ctx, sitio, pago) {
     const nueva = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(fila.id).first();
     const cliente = nueva.user_id ? await env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(nueva.user_id).first() : null;
     if (cliente) await enviarSinFallar(env, ctx, { to: cliente.email, ...mailCambioEstado({ ...nueva, items: JSON.parse(nueva.items_json) }, `${sitio}/cuenta.html`) });
+    await avisarCambioDePedido(env, ctx, nueva, { cambioEstado: true, cambioSeg: false });
     // Factura oficial (ARCA). Está apagada hasta que se active a propósito; si falla, el cobro y el pedido no se tocan.
     facturarSinFallar(env, ctx, sitio, fila.id);
     return "confirmado";

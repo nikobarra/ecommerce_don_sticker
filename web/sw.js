@@ -3,7 +3,7 @@
 //  2) Si no hay conexión, muestra lo último que el cliente ya vio (red primero, copia guardada de respaldo).
 // Red PRIMERO a propósito: precios, packs y código siempre salen frescos cuando hay conexión; la copia solo
 // aparece cuando la red falla. Nunca guarda la API, el panel ni las páginas con datos de la persona.
-const VERSION = "ds-v1";
+const VERSION = "ds-v2";
 const PAGINAS = `${VERSION}-paginas`;
 const ARCHIVOS = `${VERSION}-archivos`;
 const MAX_IMAGENES = 250;
@@ -51,5 +51,32 @@ self.addEventListener("fetch", (e) => {
       if (esPagina) return (await caches.match("/offline")) || (await caches.match("/")) || Response.error();
       return Response.error();
     }
+  })());
+});
+
+// ---------- Avisos al celular (Web Push) ----------
+// El servidor manda un JSON cifrado: { titulo, texto, url, etiqueta }. Solo avisa del estado de un pedido.
+self.addEventListener("push", (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { d = { texto: e.data ? e.data.text() : "" }; }
+  e.waitUntil(self.registration.showNotification(d.titulo || "Don Sticker", {
+    body: d.texto || "Tenés novedades de tu pedido.",
+    icon: "/assets/icono-192.png",
+    tag: d.etiqueta || "don-sticker",
+    data: { url: typeof d.url === "string" && d.url.startsWith("/") ? d.url : "/cuenta" },
+  }));
+});
+
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  const destino = new URL((e.notification.data && e.notification.data.url) || "/cuenta", self.location.origin).href;
+  e.waitUntil((async () => {
+    const abiertas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of abiertas) {
+      if (c.url === destino && "focus" in c) return c.focus();
+    }
+    const alguna = abiertas.find((c) => "navigate" in c && "focus" in c);
+    if (alguna) { await alguna.navigate(destino); return alguna.focus(); }
+    return self.clients.openWindow(destino);
   })());
 });

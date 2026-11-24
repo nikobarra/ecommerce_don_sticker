@@ -687,12 +687,31 @@
     return lineas.join("\n");
   }
 
+  // Después de pedir, si hay sesión y el dispositivo admite avisos, se ofrece una sola vez (sin pedir permiso solo).
+  async function ofrecerAvisos() {
+    const caja = $("#ph-push");
+    if (!caja || !window.DonPush || !(window.Cuenta && window.Cuenta.usuario)) return;
+    $("#ph-push-mensaje").hidden = true;
+    caja.hidden = (await window.DonPush.estado()) !== "disponible";
+  }
+  const btnAvisos = $("#ph-push-activar");
+  if (btnAvisos) btnAvisos.addEventListener("click", async () => {
+    btnAvisos.disabled = true;
+    const r = await window.DonPush.activar();
+    btnAvisos.disabled = false;
+    const m = $("#ph-push-mensaje");
+    m.textContent = r.ok ? "Hecho. Te aviso cuando cambie el estado." : r.mensaje;
+    m.hidden = false;
+    btnAvisos.hidden = r.ok;
+  });
+
   let pedidoHecho = null;
   function mostrarPedidoHecho(p, problema) {
     pedidoHecho = p;
     $("#carrito-detalle").hidden = true;
     $("#carrito-vacio").hidden = true;
     $("#pedido-hecho").hidden = false;
+    ofrecerAvisos();
     $("#ph-numero").textContent = p.numero;
     $("#ph-total").textContent = pesos(p.total);
     $("#ph-envio").textContent = p.entrega !== "envio" ? `Punto de entrega en ${p.entrega}, sin cargo` : p.envio === 0 ? "Envío gratis" : `Envío ${pesos(p.envio)}${p.envioFuente === "correo" ? "" : p.envioFuente === "zona" ? " (según tu provincia)" : " (estimado, te lo confirmamos)"}`;

@@ -30,10 +30,12 @@ export async function misDatos(request, env) {
   if (!u) return error("sin_sesion", "Ingresá a tu cuenta.", 401);
   const pedidos = await env.DB.prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at").bind(u.id).all();
   const consentimientos = await env.DB.prepare("SELECT action, channel, text_version, created_at FROM consent_events WHERE user_id = ? ORDER BY id").bind(u.id).all();
+  const avisosCelular = await env.DB.prepare("SELECT created_at, last_ok_at FROM push_subscriptions WHERE user_id = ? ORDER BY id").bind(u.id).all();
   return json(
     {
       cuenta: { email: u.email, nombre: u.name, mailVerificado: Boolean(u.email_verified), creada: u.created_at, ultimoIngreso: u.last_login_at, ingresaConGoogle: Boolean(u.google_sub) },
       novedades: { activas: Boolean(u.marketing_consent), desde: u.marketing_consent_at, historial: consentimientos.results },
+      avisosCelular: { dispositivos: avisosCelular.results.map((d) => ({ activadoEl: d.created_at, ultimoAvisoEntregado: d.last_ok_at })) },
       pedidos: pedidos.results.map((f) => pedidoPublico(f)),
     },
     200,
@@ -58,6 +60,7 @@ export async function eliminarCuenta(request, env) {
     env.DB.prepare("UPDATE orders SET user_id = NULL, customer_name = '(cuenta eliminada)', street = NULL, locality = NULL, postal_code = NULL, notes = '', attribution_json = NULL, idempotency_key = NULL, request_fingerprint = NULL WHERE user_id = ?").bind(u.id),
     env.DB.prepare("DELETE FROM sessions WHERE user_id = ?").bind(u.id),
     env.DB.prepare("DELETE FROM auth_tokens WHERE user_id = ?").bind(u.id),
+    env.DB.prepare("DELETE FROM push_subscriptions WHERE user_id = ?").bind(u.id),
     env.DB.prepare("DELETE FROM consent_events WHERE user_id = ?").bind(u.id),
     env.DB.prepare("DELETE FROM newsletter_envios WHERE user_id = ?").bind(u.id),
     env.DB.prepare("DELETE FROM mail_log WHERE to_addr = ?").bind(u.email),

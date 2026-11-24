@@ -62,3 +62,12 @@ test("los avisos breves (toast) existen, van en la capa superior y respetan redu
   assert.ok(css.includes(".aviso-toast") && /prefers-reduced-motion[^}]*\n?[^}]*aviso-toast/.test(css));
   assert.ok(leer("js/app.js").includes("avisarAlSumar") && leer("js/packs.js").includes("Aviso.mostrar"));
 });
+
+test("avisos al celular: el service worker los muestra y Mi cuenta ofrece el interruptor", () => {
+  const sw = leer("sw.js");
+  assert.ok(sw.includes('addEventListener("push"') && sw.includes('addEventListener("notificationclick"'));
+  const cuenta = leer("cuenta.html");
+  for (const id of ["avisos-celular", "push-activar", "push-desactivar", "push-probar"]) assert.ok(cuenta.includes(`id="${id}"`), id);
+  assert.ok(cuenta.includes('src="js/push.js"') && leer("index.html").includes('src="js/push.js"'));
+  assert.ok(leer("privacidad.html").includes("avisos al celular"));
+});

@@ -138,6 +138,7 @@ Botón de arrepentimiento, política de privacidad, términos y condiciones, enl
 ### Mi cuenta
 - **Pedidos** con barra de progreso (Recibido → Pago confirmado → Preparando → Despachado → Entregado), detalle, envío, seguimiento y **recorrido** con fecha de cada cambio.
 - **Pagar** con Mercado Pago un pedido que quedó pendiente.
+- **Avisos en el celular** (Web Push): un interruptor activa los avisos del estado del pedido en ese dispositivo (pago confirmado, despachado con seguimiento, entregado, cancelado), con botón de prueba. Ver «Avisos al celular» más abajo.
 - **Arrepentirse y cancelar** mientras el pedido no se despachó.
 - **Descargar la factura** (PDF) de cada pedido ya facturado.
 - Editar el nombre, cambiar la contraseña, activar o quitar las **novedades por mail** (consentimiento expreso, con fecha y medio de aceptación).
@@ -257,6 +258,7 @@ D1 (SQLite). Migraciones en orden en `worker/migrations/`:
 | `page_views` | Contador de visitas anónimo. |
 | `newsletters`, `newsletter_envios` | Mail semanal y su avance. |
 | `taller_equipos` | Equipos vinculados a la app local de impresión. |
+| `push_subscriptions` | Dispositivos que activaron los avisos al celular (dirección del navegador y claves públicas de cifrado). Se borran al desactivar o al eliminar la cuenta. |
 | `invoices`, `credit_notes` | Facturas y notas de crédito (una por pedido / por factura). |
 | `arca_tickets` | Acceso temporal a ARCA, reutilizado mientras vive. |
 
@@ -269,6 +271,7 @@ Todas bajo `/api/` (JSON). Las que modifican datos exigen origen válido.
 | Grupo | Rutas |
 |---|---|
 | Público | `GET /config`, `GET /envio`, `GET /destacados`, `POST /visita`, `POST /sugerencias` |
+| Avisos al celular | `POST /push/suscribir · baja · prueba` (con sesión) |
 | Cuenta | `POST /auth/registro · ingreso · salida · olvide · restablecer · verificar · reenviar · password · google`, `GET /auth/yo`, `GET /cuenta/datos`, `PATCH/DELETE /cuenta` |
 | Pedidos | `GET/POST /pedidos`, `GET /pedidos/:id`, `POST /pedidos/:id/cancelar`, `POST /pedidos/:id/pago`, `GET /pedidos/:id/factura`, `GET /pedidos/numero/:numero` |
 | Mercado Pago | `POST /pagos/mercadopago` (aviso firmado) |
@@ -318,6 +321,20 @@ npx cf deploy                                                  # sube TODO lo de
 ```
 
 `cf deploy` sube **toda** la carpeta `web/`, no solo lo último que se cambió. No usar `npm run deploy` ni `wrangler deploy`.
+
+---
+
+## Avisos al celular (Web Push)
+
+Cuando el dueño cambia el estado de un pedido (o se acredita un pago de Mercado Pago), el cliente que activó los avisos recibe una notificación en su celular, aunque la app esté cerrada.
+
+- **Sin librerías ni servicios de terceros**: `worker/src/push.js` cifra cada aviso con el estándar RFC 8291 (`aes128gcm`, WebCrypto) y se identifica con VAPID (RFC 8292). El test reproduce el vector oficial del RFC y descifra con `node:crypto`.
+- **Qué se avisa**: pago confirmado, despachado (con el seguimiento), entregado, cancelado, y un seguimiento cargado después de despachar. Los pasos intermedios («preparando») no avisan, para no molestar.
+- **Encendido**: hacen falta `VAPID_PUBLIC_KEY` (variable en `cloudflare.config.ts`) y `VAPID_PRIVATE_KEY` (**secreto**; copia fuera del proyecto en `~/.donsticker/vapid-privada.txt`). Sin las dos, la web no ofrece los avisos. Si se cambia el par, hay que volver a activar los avisos en cada dispositivo.
+- **Seguridad**: solo se aceptan direcciones de los servicios de push de Google, Mozilla, Apple y Microsoft, por https (así la función no sirve para pedirle cosas a sitios cualquiera); máximo 5 dispositivos por cuenta; límites de uso; el botón de prueba tiene tope.
+- **Privacidad**: se guarda solo la dirección del navegador y las claves públicas; se borran al desactivar o al eliminar la cuenta, y la política de privacidad lo explica.
+- **iPhone**: Apple solo permite avisos a las apps instaladas en la pantalla de inicio; la web lo explica en «Mi cuenta».
+- **Cliente**: `web/js/push.js` (activar, desactivar, probar), el interruptor en `cuenta.html` y el ofrecimiento al terminar un pedido; `web/sw.js` recibe el aviso y lo muestra.
 
 ---
 

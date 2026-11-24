@@ -496,6 +496,11 @@
             <div><dt>Total</dt><dd id="ph-total"></dd></div>
             <div><dt>Entrega</dt><dd id="ph-envio"></dd></div>
           </dl>
+          <div class="ph-push" id="ph-push" hidden>
+            <p>¿Querés que te avise al celular cuando cambie el estado de tu pedido?</p>
+            <button class="boton boton--claro boton--ancho" id="ph-push-activar" type="button">Avisarme al celular</button>
+            <p class="ayuda" id="ph-push-mensaje" role="status" hidden></p>
+          </div>
           <p id="ph-texto">Avisame por WhatsApp para coordinar el pago. Te mandé el detalle por mail y lo podés seguir en tu cuenta.</p>
           <button class="boton boton--primario boton--ancho" id="ph-reintentar" type="button" hidden>Reintentar el pago con Mercado Pago</button>
           <a class="boton boton--primario boton--ancho" id="ph-whatsapp" href="#" target="_blank" rel="noopener">Avisar por WhatsApp<span class="oculto"> (se abre en otra pestaña)</span></a>
@@ -510,6 +515,7 @@
   <script src="js/visita.js"></script>
   <script src="js/analitica.js"></script>
   <script src="js/cuenta.js"></script>
+  <script src="js/push.js"></script>
   <script src="js/app.js"></script>
   <script src="js/banda.js"></script>
   <script src="js/sugerencias.js"></script>

@@ -100,6 +100,7 @@ test("las demás rutas siguen sirviendo la web y /api desconocida da 404", async
 test("la configuración pública no incluye secretos", async () => {
   const env = crearEntorno({ ...CLAVES });
   const r = await cliente(env).get("/api/config");
-  assert.deepEqual(Object.keys(r.datos).sort(), ["analitica", "googleClientId", "mercadoPago", "textoConsentimiento", "versionConsentimiento"]);
+  assert.deepEqual(Object.keys(r.datos).sort(), ["analitica", "googleClientId", "mercadoPago", "pushClave", "textoConsentimiento", "versionConsentimiento"]);
+  assert.equal(r.datos.pushClave, "", "sin las claves VAPID los avisos al celular están apagados");
   assert.ok(!r.texto.includes("clave"));
 });

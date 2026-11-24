@@ -20,6 +20,7 @@ import { recordatoriosDePago } from "./avisos.js";
 import { reintentarFacturas, miFactura, facturarDesdePanel, notaCreditoDesdePanel, comprobanteDesdePanel, listarFacturas } from "./facturacion.js";
 import { actualizarPerfil, misDatos, eliminarCuenta, baja } from "./cuenta.js";
 import { crearSugerencia } from "./sugerencias.js";
+import { pushActivo, suscribir, desuscribir, probar } from "./push.js";
 import { accesoTaller } from './taller-acceso.js';
 import { pedidosTaller } from './taller.js';
 
@@ -29,7 +30,7 @@ async function api(request, env, ctx, pathname) {
   if (!origenPermitido(request, pathname)) return error("origen_invalido", "Pedido no permitido.", 403);
 
   if (pathname === "/api/config" && metodo === "GET") {
-    return json({ googleClientId: env.GOOGLE_CLIENT_ID || "", mercadoPago: mercadoPagoActivo(env), analitica: analiticaPublica(env), textoConsentimiento: TEXTO_CONSENTIMIENTO, versionConsentimiento: VERSION_CONSENTIMIENTO });
+    return json({ googleClientId: env.GOOGLE_CLIENT_ID || "", mercadoPago: mercadoPagoActivo(env), analitica: analiticaPublica(env), pushClave: pushActivo(env) ? env.VAPID_PUBLIC_KEY : "", textoConsentimiento: TEXTO_CONSENTIMIENTO, versionConsentimiento: VERSION_CONSENTIMIENTO });
   }
   if (pathname === "/api/envio" && metodo === "GET") return rutaEnvio(request, env, ctx);
   if (pathname === "/api/destacados" && metodo === "GET") return destacados(env);
@@ -62,6 +63,9 @@ async function api(request, env, ctx, pathname) {
       case "/api/auth/google": return google(request, env, ctx);
       case "/api/pedidos": return crearPedido(request, env, ctx);
       case "/api/sugerencias": return crearSugerencia(request, env);
+      case "/api/push/suscribir": return suscribir(request, env);
+      case "/api/push/baja": return desuscribir(request, env);
+      case "/api/push/prueba": return probar(request, env);
       case "/api/visita": return registrarVisita(request, env);
       case "/api/admin/conciliar": return conciliarAdmin(request, env, ctx);
       case "/api/admin/novedades/prueba": return pruebaNovedades(request, env);

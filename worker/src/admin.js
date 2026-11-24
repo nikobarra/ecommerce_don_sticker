@@ -6,6 +6,7 @@ import { PACKS_CONTENIDO } from "./packs-contenido.js";
 import { usuarioActual, usuarioPublico } from "./auth.js";
 import { pedidoPublico } from "./pedidos.js";
 import { enviarSinFallar, mailCambioEstado, urlSitio } from "./mail.js";
+import { avisarCambioDePedido } from "./push.js";
 import { usuarioTaller } from "./taller-acceso.js";
 import { facturacionPorPedido } from "./facturacion.js";
 import { facturacionActiva } from "./arca.js";
@@ -83,5 +84,6 @@ export async function actualizarPedido(request, env, ctx, id) {
   if (cliente && (cambioEstado || cambioSeg)) {
     await enviarSinFallar(env, ctx, { to: cliente.email, ...mailCambioEstado({ ...nueva, items: JSON.parse(nueva.items_json) }, `${urlSitio(env, request)}/cuenta.html`) });
   }
+  await avisarCambioDePedido(env, ctx, nueva, { cambioEstado, cambioSeg });
   return json({ pedido: pedidoPublico(nueva) });
 }

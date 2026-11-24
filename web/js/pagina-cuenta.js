@@ -168,11 +168,57 @@
 
   $("#salir").addEventListener("click", async () => { await window.Cuenta.cerrarSesion(); location.href = "/"; });
 
+  // ---------- Avisos al celular ----------
+  const TEXTOS_PUSH = {
+    disponible: "",
+    activo: "Activados en este dispositivo.",
+    bloqueado: "Bloqueaste las notificaciones de Don Sticker en este navegador. Para activarlas, habilitalas en los ajustes del sitio y volvé acá.",
+    instalar: "En iPhone, primero instalá la app: tocá «Compartir» y después «Agregar a pantalla de inicio». Abrila desde ahí y activá los avisos.",
+    "sin-soporte": "Este navegador no admite avisos al celular.",
+  };
+  async function pintarPush() {
+    const caja = $("#avisos-celular");
+    if (!caja || !window.DonPush) return;
+    const e = await window.DonPush.estado();
+    caja.hidden = e === "apagado";
+    if (e === "apagado") return;
+    $("#push-ayuda").textContent = TEXTOS_PUSH[e] || "";
+    $("#push-activar").hidden = e !== "disponible";
+    $("#push-probar").hidden = e !== "activo";
+    $("#push-desactivar").hidden = e !== "activo";
+  }
+  function mensajePush(texto) {
+    const m = $("#push-mensaje");
+    if (!m) return;
+    m.textContent = texto || "";
+    m.hidden = !texto;
+  }
+  if ($("#push-activar")) {
+    $("#push-activar").addEventListener("click", async (ev) => {
+      ev.currentTarget.disabled = true;
+      const r = await window.DonPush.activar();
+      ev.currentTarget.disabled = false;
+      mensajePush(r.ok ? "Listo, te voy a avisar cuando cambie el estado de tu pedido." : r.mensaje);
+      pintarPush();
+    });
+    $("#push-desactivar").addEventListener("click", async () => {
+      await window.DonPush.desactivar();
+      mensajePush("Listo, no te voy a escribir más al celular.");
+      pintarPush();
+    });
+    $("#push-probar").addEventListener("click", async (ev) => {
+      ev.currentTarget.disabled = true;
+      const r = await window.DonPush.probar();
+      ev.currentTarget.disabled = false;
+      mensajePush(r.ok ? "Te mandé una prueba. Debería llegar en unos segundos." : r.mensaje);
+    });
+  }
+
   // ---------- Arranque ----------
   async function mostrar(u) {
     $("#sin-sesion").hidden = Boolean(u);
     $("#con-sesion").hidden = !u;
-    if (u) { pintarUsuario(u); cargarPedidos(); }
+    if (u) { pintarUsuario(u); cargarPedidos(); pintarPush(); if (window.DonPush) window.DonPush.sincronizar(); }
   }
 
   $("#abrir-ingreso").addEventListener("click", async () => {

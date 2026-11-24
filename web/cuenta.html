@@ -48,6 +48,20 @@
         </form>
       </section>
 
+      <section id="avisos-celular" hidden>
+        <h2>Avisos en el celular</h2>
+        <div class="tarjeta-p">
+          <p id="push-texto">Te escribo al celular cuando cambie el estado de tu pedido: pago confirmado, despachado, entregado. Nada más.</p>
+          <p class="ayuda" id="push-ayuda"></p>
+          <p class="exito" id="push-mensaje" role="status" hidden></p>
+          <p class="push-botones">
+            <button class="boton boton--primario" type="button" id="push-activar" hidden>Activar avisos en este dispositivo</button>
+            <button class="boton boton--claro" type="button" id="push-probar" hidden>Enviarme una prueba</button>
+            <button class="boton boton--claro" type="button" id="push-desactivar" hidden>Desactivar</button>
+          </p>
+        </div>
+      </section>
+
       <h2>Novedades por mail</h2>
       <section class="tarjeta-p">
         <label class="consentimiento">
@@ -86,6 +100,7 @@
   <script src="js/visita.js"></script>
   <script src="js/analitica.js"></script>
   <script src="js/cuenta.js"></script>
+  <script src="js/push.js"></script>
   <script src="js/pagina-cuenta.js"></script>
   <script src="js/ux.js"></script>
 </body>

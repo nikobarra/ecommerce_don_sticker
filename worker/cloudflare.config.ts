@@ -39,6 +39,12 @@ export default defineConfig({
 			ARCA_AMBIENTE: bindings.text("produccion"),
 			ARCA_CUIT: bindings.text("20274973022"),
 			ARCA_PTO_VTA: bindings.text("11"),
+			// --- Avisos al celular (Web Push, worker/src/push.js). Se encienden solo con las DOS claves: esta pública y el
+			// SECRETO VAPID_PRIVATE_KEY (cf workers secrets update VAPID_PRIVATE_KEY --worker donsticker --type secret_text).
+			// La privada está guardada fuera del proyecto, en ~/.donsticker/vapid-privada.txt. Si se cambia el par, los
+			// dispositivos suscriptos dejan de recibir y hay que volver a activar los avisos.
+			VAPID_PUBLIC_KEY: bindings.text("BJnh34meYieM7i8DsrlZZ8pOOXzYFgRMmhowSaPQaWdj0Q9iQbLSFnO4EDVa59ZXlR3_w6W1B70QiDly3g1vRn4"),
+			VAPID_SUBJECT: bindings.text("mailto:donsticker.ar@gmail.com"),
 			// --- Analítica (opcional; vacío = no se carga nada ni se muestra ningún aviso). Ver Docs/ANALITICA.md.
 			// GA4_ID ("G-XXXXXXXXXX"), ADS_ID ("AW-XXXXXXXXX") y ADS_ETIQUETA_COMPRA se agregan acá cuando existan.
 			// --- Cuentas y panel
