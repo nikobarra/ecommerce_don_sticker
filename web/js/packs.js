@@ -14,6 +14,7 @@
   function leer() { try { return JSON.parse(localStorage.getItem(CLAVE) || "{}") || {}; } catch (e) { return {}; } }
   function guardar(pedido) { try { localStorage.setItem(CLAVE, JSON.stringify(pedido)); } catch (e) { /* sin almacenamiento */ } }
   let pedido = leer();
+  window.DonPedido = { cantidad: (id) => Number(pedido[id]) || 0 };
   let grupo = (location.hash || "").replace("#", "");
   if (!GRUPOS.some((x) => x.g === grupo)) grupo = "10";
 
@@ -36,7 +37,7 @@
     const lista = PACKS.filter((p) => p.grupo === grupo);
     $("#packs-cuenta").textContent = `${lista.length} packs`;
     $("#lista-packs").innerHTML = lista.map((p, i) => `<article class="tarjeta tarjeta--pack" data-id="${p.id}" style="--r:${i % 2 ? 1 : -1}deg">
-        <div class="tarjeta__arte"><img src="${p.imagen}" alt="" loading="${i < 6 ? "eager" : "lazy"}" width="320" height="320"></div>
+        <button type="button" class="tarjeta__arte" data-ver="${p.id}" aria-label="Ver qué trae ${p.nombre}"><img src="${p.imagen}" alt="" loading="${i < 6 ? "eager" : "lazy"}" width="320" height="320"></button>
         <h3>${p.nombre}</h3>
         <p class="tarjeta__dato">${p.unidades} stickers · ${pesos(p.precio / p.unidades)} cada uno</p>
         <div class="tarjeta__pie">
@@ -44,6 +45,14 @@
           ${control(p)}
         </div>
       </article>`).join("");
+    document.querySelectorAll("#lista-packs .tarjeta__arte img").forEach((img) => {
+      if (img.complete) return;
+      const caja = img.parentElement;
+      caja.classList.add("cargando");
+      const listo = () => caja.classList.remove("cargando");
+      img.addEventListener("load", listo, { once: true });
+      img.addEventListener("error", listo, { once: true });
+    });
   }
 
   function pintarBarra() {
@@ -70,13 +79,19 @@
     const n = Math.max(0, Math.min(999, (Number(pedido[id]) || 0) + (d.sumar ? 1 : -1)));
     if (n) pedido[id] = n; else delete pedido[id];
     guardar(pedido);
-    const tarjeta = b.closest("[data-id]");
+    // El botón puede estar en la tarjeta o en la ventana de vista rápida (que se actualiza sola con «pedido:cambio»).
+    const tarjeta = b.closest("#lista-packs [data-id]");
     const p = PACKS.find((x) => x.id === id);
-    const actual = tarjeta.querySelector(".agregar, .cantidad");
+    const enLista = document.querySelector(`#lista-packs [data-id="${id}"]`);
+    const actual = enLista && enLista.querySelector(".agregar, .cantidad");
     if (actual) actual.outerHTML = control(p);
-    const foco = tarjeta.querySelector(n ? `[data-sumar="${id}"]` : `[data-sumar="${id}"]`);
-    if (foco) foco.focus();
+    if (tarjeta) {
+      const foco = tarjeta.querySelector(`[data-sumar="${id}"]`);
+      if (foco) foco.focus();
+    }
     pintarBarra();
+    if (d.sumar && window.Aviso) window.Aviso.mostrar(`Agregado: ${p.nombre}`, { clave: "pedido", accion: { texto: "Ver pedido", href: "/?carrito=1" } });
+    document.dispatchEvent(new CustomEvent("pedido:cambio", { detail: { id } }));
   });
 
   window.addEventListener("hashchange", () => {
@@ -84,7 +99,7 @@
     if (GRUPOS.some((x) => x.g === g) && g !== grupo) { grupo = g; pintarPestanas(); pintarLista(); }
   });
   // Si el pedido cambió en otra pestaña, se vuelve a leer.
-  window.addEventListener("storage", () => { pedido = leer(); pintarLista(); pintarBarra(); });
+  window.addEventListener("storage", () => { pedido = leer(); pintarLista(); pintarBarra(); document.dispatchEvent(new CustomEvent("pedido:cambio", { detail: {} })); });
 
   pintarPestanas();
   pintarLista();

@@ -54,6 +54,9 @@
   <link rel="apple-touch-icon" href="assets/favicon-180.png">
   <link rel="preload" href="fonts/BarlowCondensed-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="js/tema-inicial.js"></script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#FD0000">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -408,6 +411,7 @@
   <div class="barra-pedido" id="barra-pedido" hidden>
     <p class="barra-pedido__texto"><strong id="bp-cantidad">0 productos</strong> <span id="bp-total"></span></p>
     <button class="boton boton--primario" type="button" id="bp-abrir">Ver mi pedido</button>
+    <span class="bp-progreso" aria-hidden="true"><span id="bp-progreso-barra"></span></span>
   </div>
 
   <footer class="pie">
@@ -418,6 +422,7 @@
       <p class="pie__legal"><a href="/privacidad">Política de privacidad</a> · <a href="/terminos">Términos y condiciones</a> · <a href="/cuenta">Mi cuenta</a></p>
       <p class="pie__legal"><a href="https://autogestion.produccion.gob.ar/consumidores" target="_blank" rel="noopener">Defensa de las y los Consumidores. Para reclamos ingrese aquí.</a></p>
       <p class="pie__legal pie__fiscal"><a href="http://qr.afip.gob.ar/?qr=pWhM3SwcWtVmXf2-YBlGBA,," target="_F960AFIPInfo" rel="noopener"><img src="assets/data-fiscal.jpg" alt="Data Fiscal: datos fiscales de Don Sticker en ARCA (se abre en otra pestaña)" width="120" height="164" loading="lazy"></a></p>
+      <p class="pie__legal"><button class="boton boton--claro" type="button" id="instalar" hidden>Instalar la app en tu celular</button></p>
       <p class="pie__legal pie__credito">Web desarrollada por <a href="https://www.duckia.com.ar/" target="_blank" rel="noopener">duckia.com.ar<span class="oculto"> (se abre en otra pestaña)</span></a></p>
     </div>
   </footer>
@@ -437,6 +442,10 @@
         <p class="vacio" id="carrito-vacio">Todavía no elegiste nada. Ese termo sigue pelado.</p>
         <ul class="lineas" id="lineas"></ul>
         <div id="carrito-detalle" hidden>
+          <div class="progreso" id="progreso" hidden>
+            <p class="progreso__texto" id="progreso-texto"></p>
+            <div class="progreso__pista" role="progressbar" aria-label="Avance hacia el siguiente precio por cantidad" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progreso__barra" id="progreso-barra"></div></div>
+          </div>
           <p class="aviso" id="aviso-escalon" hidden></p>
           <dl class="totales">
             <div id="fila-packs"><dt id="t-packs-detalle"></dt><dd id="t-packs"></dd></div>
@@ -505,5 +514,7 @@
   <script src="js/banda.js"></script>
   <script src="js/sugerencias.js"></script>
   <script src="js/aparecer.js"></script>
+  <script src="js/vista.js"></script>
+  <script src="js/ux.js"></script>
 </body>
 </html>

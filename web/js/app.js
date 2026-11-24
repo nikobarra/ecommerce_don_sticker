@@ -30,6 +30,9 @@
   } catch (e) { pedido = {}; }
 
   const guardar = () => almacen.guardar(CLAVE, JSON.stringify(pedido));
+  // Lo usa la vista rápida (js/vista.js) para mostrar la cantidad real; avisa cada cambio con el evento «pedido:cambio».
+  window.DonPedido = { cantidad: (id) => pedido[id] || 0 };
+  const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // ---------- Anuncios para lectores de pantalla ----------
   // Un solo mensaje corto por acción. Con el carrito abierto el resto de la página está inerte, así que
@@ -253,7 +256,7 @@
         : `<div class="muestra" style="--c:${p.color};--r:${i % 2 ? 5 : -5}deg" aria-hidden="true">${p.texto}</div>`;
       return `<article class="tarjeta" data-id="${p.id}">
         ${p.exclusivo ? '<span class="etiqueta">De la casa</span>' : NOVEDADES.has(p.id) ? '<span class="etiqueta">Nuevo</span>' : ""}
-        <div class="tarjeta__arte">${arte}</div>
+        <button type="button" class="tarjeta__arte" data-ver="${p.id}" aria-label="Ver ${p.nombre} en grande">${arte}</button>
         <h3>${p.nombre}</h3>
         <p class="tarjeta__codigo">Código <strong>${p.id.toUpperCase()}</strong></p>
         <p class="tarjeta__dato">${categoriasDe(p).join(", ")} · ${CONFIG.tamano}</p>
@@ -263,6 +266,7 @@
         </div>
       </article>`;
     }).join("");
+    esqueletos($("#grilla"));
     $("#sin-resultados").hidden = total > 0;
     $("#catalogo-cuenta").textContent = !total ? "" : total === 1 ? "1 diseño" : `Mostrando ${desde + 1} a ${hasta} de ${total} diseños`;
     pintarPaginas(total, paginas, hasta);
@@ -274,6 +278,48 @@
   function anunciarResultados(n) {
     clearTimeout(temporizadorFiltro);
     temporizadorFiltro = setTimeout(() => anunciar(n === 0 ? "No encontré ese diseño." : n === 1 ? "1 diseño." : `${n} diseños.`), 500);
+  }
+
+  // Mientras una imagen carga, su cuadro muestra un esqueleto brillante (clase «cargando»). Sin JS o con la imagen ya
+  // en caché no se agrega nada, así que nunca queda un esqueleto pegado.
+  function esqueletos(raiz) {
+    raiz.querySelectorAll(".tarjeta__arte img").forEach((img) => {
+      if (img.complete) return;
+      const caja = img.parentElement;
+      caja.classList.add("cargando");
+      const listo = () => caja.classList.remove("cargando");
+      img.addEventListener("load", listo, { once: true });
+      img.addEventListener("error", listo, { once: true });
+    });
+  }
+
+  // Respuesta al sumar: el contador del botón «Mi pedido» rebota y, si se ve la tarjeta, el sticker vuela hasta el carrito.
+  function rebotar(el) {
+    if (!el || sinMovimiento.matches) return;
+    el.classList.remove("rebota");
+    void el.offsetWidth; // reinicia la animación aunque se sume rápido
+    el.classList.add("rebota");
+    el.addEventListener("animationend", () => el.classList.remove("rebota"), { once: true });
+  }
+  function volarAlCarrito(origen) {
+    if (sinMovimiento.matches || !origen || document.querySelector("dialog[open]")) return;
+    const img = origen.querySelector("img");
+    const meta = $("#abrir-carrito");
+    if (!img || !meta) return;
+    const a = img.getBoundingClientRect();
+    const b = meta.getBoundingClientRect();
+    if (!a.width || a.bottom < 0 || a.top > innerHeight) return;
+    const vuelo = img.cloneNode(false);
+    vuelo.className = "vuelo";
+    vuelo.setAttribute("aria-hidden", "true");
+    vuelo.style.cssText = `left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px`;
+    document.body.appendChild(vuelo);
+    const dx = b.left + b.width / 2 - (a.left + a.width / 2);
+    const dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    const anim = vuelo.animate(
+      [{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: `translate(${dx}px,${dy}px) scale(.12)`, opacity: .4 }],
+      { duration: 560, easing: "cubic-bezier(.5,-0.2,.7,.4)" });
+    anim.onfinish = () => { vuelo.remove(); rebotar($("#contador")); rebotar($("#abrir-carrito")); };
   }
 
   // ---------- Carrito ----------
@@ -303,12 +349,9 @@
     const sig = CONFIG.tramos.find((t) => t.desde > r.sueltos);
     const partes = [];
     if (r.sueltos >= CONFIG.tramos[0].desde) partes.push(`Tus ${r.sueltos} stickers a elección quedan a ${pesos(r.unitario)} cada uno.`);
-    if (r.sueltos > 0 && sig && sig.desde - r.sueltos <= 10) {
-      const faltan = sig.desde - r.sueltos;
-      partes.push(`${faltan === 1 ? "Te falta 1" : "Te faltan " + faltan} para pagar ${pesos(precioSuelto(sig.desde, medioDePago))} cada uno.`);
-    }
     aviso.textContent = partes.join(" ");
     aviso.hidden = partes.length === 0;
+    pintarProgreso(r.sueltos);
 
     // Las líneas muestran el precio de lista, y abajo se resta el descuento: así se ve lo que se ahorra.
     $("#fila-sueltos").hidden = r.sueltos === 0;
@@ -329,6 +372,26 @@
     pintarTextosDelMedio();
     // Si hubo que volver a transferencia, los totales cambian: se vuelven a pintar una vez.
     if (pintarPago(e)) pintarCarrito();
+  }
+
+  // Barra de progreso hacia el siguiente precio por cantidad (solo cuenta los stickers a elección).
+  function pintarProgreso(sueltos) {
+    const caja = $("#progreso");
+    if (!caja) return;
+    if (sueltos === 0) { caja.hidden = true; const m0 = $("#bp-progreso-barra"); if (m0) m0.style.width = "0%"; return; }
+    const sig = CONFIG.tramos.find((t) => t.desde > sueltos);
+    const base = [...CONFIG.tramos].reverse().find((t) => t.desde <= sueltos);
+    const desde = base ? base.desde : 0;
+    const pct = sig ? Math.round(((sueltos - desde) / (sig.desde - desde)) * 100) : 100;
+    caja.hidden = false;
+    $("#progreso-texto").textContent = sig
+      ? `Llevás ${sueltos} a elección: sumá ${sig.desde - sueltos} y cada uno sale ${pesos(sig.precio)}`
+      : `¡Precio mínimo! Tus ${sueltos} a elección salen ${pesos(precioUnitarioLista(sueltos))} cada uno`;
+    $("#progreso-barra").style.width = pct + "%";
+    const mini = $("#bp-progreso-barra");
+    if (mini) mini.style.width = pct + "%";
+    caja.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(pct));
+    caja.classList.toggle("progreso--completo", !sig);
   }
 
   // El texto de abajo y el botón dicen lo que realmente va a pasar según cómo se paga.
@@ -439,6 +502,28 @@
     });
     pintarCarrito();
     guardar();
+    document.dispatchEvent(new CustomEvent("pedido:cambio", { detail: { id } }));
+  }
+
+  // Avisos visibles (toast). Solo dos casos, para no molestar: (1) se llegó a un precio por cantidad mejor, siempre;
+  // (2) se sumó algo desde la vista rápida, donde no se ve el contador del carrito. En la grilla alcanza con el vuelo del sticker.
+  function avisarAlSumar(id, antes, n) {
+    if (!window.Aviso || n <= antes) return;
+    const sueltos = resumen().sueltos;
+    if (!esPack(id)) {
+      const antesSueltos = sueltos - (n - antes);
+      if (precioUnitarioLista(sueltos) < precioUnitarioLista(antesSueltos)) {
+        const hito = [...CONFIG.tramos].reverse().find((t) => t.desde <= sueltos).desde;
+        window.Aviso.mostrar(`¡Llegaste a ${hito}! Ahora cada uno sale ${pesos(precioUnitarioLista(sueltos))}.`, { clave: "pedido" });
+        return;
+      }
+    }
+    if (document.querySelector("dialog.vista[open]")) {
+      window.Aviso.mostrar(`Agregado: ${nombreDe(id)}`, {
+        clave: "pedido", lector: false,
+        accion: { texto: "Ver pedido", fn: () => { const v = document.getElementById("vista"); if (v && v.open) v.close(); abrir(); } },
+      });
+    }
   }
 
   function cambiar(id, delta) {
@@ -449,6 +534,7 @@
     if (n === antes) return;
     const nombre = nombreDe(id);
     anunciar(n ? `${nombre}: ${n} en el pedido. Total ${pesos(resumen().total)}.` : `${nombre} sacado del pedido.`);
+    avisarAlSumar(id, antes, n);
     medir(delta > 0 ? "add_to_cart" : "remove_from_cart", { items: [itemParaMedir(id, Math.abs(n - antes))] });
     guardarBorrador();
   }
@@ -466,7 +552,10 @@
     const d = b.dataset;
     const zonaId = (b.closest("#carrito, #grilla-packs, #grilla") || {}).id;
     let foco = null;
-    if (d.sumar) { cambiar(d.sumar, 1); foco = `[data-sumar="${d.sumar}"]`; }
+    if (d.sumar) {
+      volarAlCarrito(b.closest("#grilla .tarjeta, #grilla-packs .tarjeta, .vista__cuerpo")?.querySelector(".tarjeta__arte, .vista__arte"));
+      cambiar(d.sumar, 1); foco = `[data-sumar="${d.sumar}"]`;
+    }
     else if (d.restar) { cambiar(d.restar, -1); foco = pedido[d.restar] ? `[data-restar="${d.restar}"]` : `[data-sumar="${d.restar}"]`; }
     else if (d.quitar) {
       const nombre = nombreDe(d.quitar);

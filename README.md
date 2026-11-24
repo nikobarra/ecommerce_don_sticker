@@ -61,7 +61,8 @@ web/                      El sitio (se publica tal cual)
   arrepentimiento.html    Botón de arrepentimiento
   privacidad.html · terminos.html · restablecer.html · verificar.html
   css/styles.css          Todos los estilos
-  js/                     Un archivo por pantalla o función (app, cuenta, packs, panel, analítica…)
+  js/                     Un archivo por pantalla o función (app, cuenta, packs, vista rápida, tema, panel, analítica…)
+  sw.js · manifest.webmanifest · offline.html   App instalable y modo sin conexión
   assets/                 Imágenes del catálogo (con marca de agua), packs, logos, escena animada
   _headers                Cabeceras de seguridad y caché
   robots.txt · sitemap.xml · novedades.json
@@ -88,6 +89,7 @@ worker/                   El servidor
 - Cuatro tamaños: **10, 25, 50 y 100 stickers**, con **10 packs distintos de cada tamaño** y sin diseños repetidos dentro de un mismo tamaño. Más **packs temáticos** (rock, Simpsons, fútbol, K-pop, fauna, Mafalda, etc.).
 - Cada pack muestra una portada con sus diseños. Salen **10 % menos** que armar la misma cantidad a elección.
 - Se elige el tamaño y después cuál pack; el pedido se guarda en el navegador hasta confirmarlo.
+- Al tocar un pack se abre una **vista rápida** con «Qué trae este pack»: los diseños que lleva, cada uno ampliable. El contenido sale de `web/js/packs-contenido.js` (copia de `worker/src/packs-contenido.js`; se regenera con `node scripts/sincronizar-packs-web.mjs` y un test avisa si quedan distintos).
 
 ### Stickers a elección (catálogo)
 - Catálogo de **más de 1.200 diseños** con imágenes con marca de agua.
@@ -95,6 +97,15 @@ worker/                   El servidor
 - Sección **Novedades** con los últimos 100 diseños.
 - **Precio por cantidad** (se aplica a todo el pedido, no solo a los stickers de más): 1 a 9 → $700 c/u · desde 10 → $630 · desde 25 → $595 · desde 50 → $560 · desde 100 → $525. El carrito avisa «te faltan N para el próximo precio».
 - Por **transferencia hay 10 % de descuento**, redondeado a los $10.
+
+### Experiencia de uso
+- **Vista rápida** de cada sticker (ventana nativa `<dialog>`): imagen grande con **zoom** (tocar y mover), precio, agregar al pedido y botones «Anterior / Siguiente» (también con las flechas del teclado) entre los diseños que se están viendo.
+- **Carrito en panel lateral** con animación de entrada; al sumar un sticker **vuela hasta el botón «Mi pedido»** y el contador rebota (se desactiva con «reducir movimiento»).
+- **Barra de progreso** hacia el próximo precio por cantidad, en el carrito y como línea fina sobre la barra inferior del celular.
+- **Esqueletos de carga** en las imágenes, botones con respuesta al tocar, y animaciones que respetan `prefers-reduced-motion`.
+- **Transiciones entre páginas** con la API nativa del navegador (`@view-transition`); sin soporte, se navega como siempre.
+- **Modo oscuro**: sigue al dispositivo y hay un botón en la barra para forzar claro u oscuro (se recuerda en el navegador; `js/tema-inicial.js` lo aplica antes de pintar para evitar destellos).
+- **App instalable (PWA)**: `manifest.webmanifest`, íconos y `sw.js`. El service worker usa **red primero** (precios y código siempre frescos) y solo muestra la copia guardada si no hay conexión (`offline.html`); nunca guarda la API, el panel ni páginas con datos de la persona.
 
 ### Emprendé
 Sección para quien quiere **revender**: tabla de costo por sticker según el pack y **metas realistas** (cuánto se gana vendiendo 50, 70 o los 100 a $1.000, $1.200 o $1.500), con las aclaraciones de envío y de que son cuentas de ejemplo.
