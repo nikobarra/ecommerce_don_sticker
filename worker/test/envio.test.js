@@ -104,3 +104,12 @@ test("la configuración pública no incluye secretos", async () => {
   assert.equal(r.datos.pushClave, "", "sin las claves VAPID los avisos al celular están apagados");
   assert.ok(!r.texto.includes("clave"));
 });
+
+test("el customerId del Correo se completa a 10 dígitos si al cargar el secreto se perdieron los ceros", async () => {
+  const { idCliente } = await import("../src/envio.js");
+  assert.equal(idCliente({ MICORREO_CUSTOMER_ID: "0000567218" }), "0000567218");
+  assert.equal(idCliente({ MICORREO_CUSTOMER_ID: "567218" }), "0000567218");
+  assert.equal(idCliente({ MICORREO_CUSTOMER_ID: 567218 }), "0000567218");
+  assert.equal(idCliente({ MICORREO_CUSTOMER_ID: "ABC-1" }), "ABC-1");
+  assert.equal(idCliente({}), "");
+});

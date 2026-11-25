@@ -26,14 +26,35 @@ const cotizacionesEnCurso = new Map(); // misma consulta al mismo tiempo: una so
 
 export const ambienteCorreo = (env) => (String(env.MICORREO_AMBIENTE || "").toLowerCase() === "produccion" ? "produccion" : "prueba");
 const baseApi = (env) => (env.MICORREO_BASE || (ambienteCorreo(env) === "produccion" ? BASE_PRODUCCION : BASE_PRUEBA)).replace(/\/+$/, "");
+// El customerId de MiCorreo son 10 dígitos con ceros a la izquierda (ej. 0000567218). Si al cargar el secreto los ceros
+// se pierden (la línea de comandos lo toma como número), el Correo lo rechaza con «Cliente FAP no identificado»: se completan.
+export const idCliente = (env) => {
+  const id = String(env.MICORREO_CUSTOMER_ID ?? "").trim();
+  return /^\d{1,9}$/.test(id) ? id.padStart(10, "0") : id;
+};
 export const correoConfigurado = (env) => Boolean(env.MICORREO_USER && env.MICORREO_PASSWORD && env.MICORREO_CUSTOMER_ID);
+
+// La API del Correo corta conexiones y responde 5xx (503, 520) de forma intermitente: se reintenta hasta 3 veces en total,
+// con una pausa corta. Los errores del pedido en sí (400, 401…) no se reintentan.
+const INTENTOS_CORREO = 3;
+async function fetchCorreo(env, url, opciones) {
+  for (let i = 1; ; i++) {
+    try {
+      const r = await fetchExterno(env, url, opciones);
+      if (r.status < 500 || i >= INTENTOS_CORREO) return r;
+    } catch (e) {
+      if (i >= INTENTOS_CORREO) throw e;
+    }
+    await new Promise((ok) => setTimeout(ok, 250 * i));
+  }
+}
 
 async function obtenerToken(env, forzar = false) {
   if (!forzar && tokenEnMemoria && tokenEnMemoria.vence > Date.now()) return tokenEnMemoria.valor;
   if (!forzar && tokenEnCurso) return tokenEnCurso;
   tokenEnCurso = (async () => {
     const basic = btoa(`${env.MICORREO_USER}:${env.MICORREO_PASSWORD}`);
-    const r = await fetchExterno(env, `${baseApi(env)}/token`, { method: "POST", headers: { Authorization: `Basic ${basic}` } });
+    const r = await fetchCorreo(env, `${baseApi(env)}/token`, { method: "POST", headers: { Authorization: `Basic ${basic}` } });
     if (!r.ok) throw new Error(`token ${r.status}`);
     const { token } = await r.json();
     if (!token) throw new Error("token vacío");
@@ -45,11 +66,11 @@ async function obtenerToken(env, forzar = false) {
 
 async function pedirTarifa(env, cp, gramos, intento = 0) {
   const token = await obtenerToken(env, intento > 0);
-  const r = await fetchExterno(env, `${baseApi(env)}/rates`, {
+  const r = await fetchCorreo(env, `${baseApi(env)}/rates`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      customerId: env.MICORREO_CUSTOMER_ID,
+      customerId: idCliente(env),
       postalCodeOrigin: String(env.CP_ORIGEN || "7620"),
       postalCodeDestination: cp,
       deliveredType: "D", // entrega a domicilio
