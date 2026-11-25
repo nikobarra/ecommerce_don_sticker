@@ -16,11 +16,27 @@ if (!usuario || !clave || !mail || !claveCuenta) {
   process.exit(1);
 }
 
-const t = await fetch(`${BASE}/token`, { method: "POST", headers: { Authorization: "Basic " + Buffer.from(`${usuario}:${clave}`).toString("base64") } });
+// La API del Correo corta conexiones y responde 5xx de vez en cuando: cada llamada se reintenta hasta 6 veces.
+async function pedir(url, opciones) {
+  for (let i = 1; ; i++) {
+    try {
+      const r = await fetch(url, opciones);
+      if (r.status < 500 && r.status !== 429) return r;
+      if (i >= 6) return r;
+      console.error(`  (el Correo respondió ${r.status}, reintento ${i}/5…)`);
+    } catch (e) {
+      if (i >= 6) throw new Error(`No pude conectarme al Correo tras 6 intentos (${e.cause?.code || e.message}). Probá de nuevo en unos minutos.`);
+      console.error(`  (conexión cortada, reintento ${i}/5…)`);
+    }
+    await new Promise((ok) => setTimeout(ok, 1500 * i));
+  }
+}
+
+const t = await pedir(`${BASE}/token`, { method: "POST", headers: { Authorization: "Basic " + Buffer.from(`${usuario}:${clave}`).toString("base64") } });
 if (!t.ok) { console.error(`No pude obtener el token (${t.status}). Revisá usuario y contraseña de la API.`); process.exit(1); }
 const { token } = await t.json();
 
-const v = await fetch(`${BASE}/users/validate`, {
+const v = await pedir(`${BASE}/users/validate`, {
   method: "POST",
   headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
   body: JSON.stringify({ email: mail, password: claveCuenta }),
@@ -33,7 +49,7 @@ console.log(`customerId = ${cuerpo.customerId}`);
 const id = String(cuerpo.customerId);
 const variantes = [...new Set([id, id.replace(/^0+/, ""), process.env.MICORREO_CUSTOMER_ID].filter(Boolean))];
 for (const customerId of variantes) {
-  const r = await fetch(`${BASE}/rates`, {
+  const r = await pedir(`${BASE}/rates`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({ customerId, postalCodeOrigin: "7620", postalCodeDestination: "1425", deliveredType: "D", dimensions: { weight: 60, height: 3, width: 18, length: 25 } }),
