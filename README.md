@@ -258,6 +258,7 @@ D1 (SQLite). Migraciones en orden en `worker/migrations/`:
 | `page_views` | Contador de visitas anónimo. |
 | `newsletters`, `newsletter_envios` | Mail semanal y su avance. |
 | `taller_equipos` | Equipos vinculados a la app local de impresión. |
+| `micorreo_envios` | Estado de la carga de cada envío en MiCorreo (importado / error y motivo). |
 | `push_subscriptions` | Dispositivos que activaron los avisos al celular (dirección del navegador y claves públicas de cifrado). Se borran al desactivar o al eliminar la cuenta. |
 | `invoices`, `credit_notes` | Facturas y notas de crédito (una por pedido / por factura). |
 | `arca_tickets` | Acceso temporal a ARCA, reutilizado mientras vive. |
@@ -321,6 +322,18 @@ npx cf deploy                                                  # sube TODO lo de
 ```
 
 `cf deploy` sube **toda** la carpeta `web/`, no solo lo último que se cambió. No usar `npm run deploy` ni `wrangler deploy`.
+
+---
+
+## Envíos: carga automática en MiCorreo
+
+Cuando un pedido **con envío** pasa a tener el pago confirmado (Mercado Pago o transferencia confirmada por el dueño), `worker/src/micorreo.js` carga el envío en la cuenta de MiCorreo (`POST /shipping/import`): destinatario, mail, dirección, peso, valor declarado y las medidas de la caja (12 × 11 × 5 cm).
+
+- **Qué NO hace**: la API de MiCorreo no permite pagar ni bajar el rótulo. Eso se sigue haciendo en «Mis envíos» de MiCorreo (se puede pagar todo junto con el saldo de la cuenta y generar los rótulos en tanda).
+- **Dirección**: el formulario tiene un solo campo («calle y número»); se separa solo cuando no hay duda («Belgrano 1234», «Calle 12 nº 345», «Mitre 456 piso 4 dpto B»…). Si no, el pedido queda marcado en el panel para cargar a mano: nunca se adivina.
+- **Panel**: cada pedido con envío muestra si está cargado o por qué no, con botón «Enviar a MiCorreo» / «Reintentar». Los cortes del Correo se reintentan solos (cron, hasta 8 veces); un rechazo del Correo o una dirección dudosa quedan para resolver a mano.
+- **Seguro**: un fallo nunca afecta al pedido ni al cobro; cargar dos veces es imposible (el Correo rechaza la orden repetida y la base guarda una fila por pedido).
+- **Encendido**: `MICORREO_IMPORTAR = "1"` en `cloudflare.config.ts` (solo funciona en producción y con las credenciales cargadas). La tabla es `micorreo_envios` (migración 0012). El origen del envío sale de la configuración de tu cuenta de MiCorreo.
 
 ---
 

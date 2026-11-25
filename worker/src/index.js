@@ -21,6 +21,7 @@ import { reintentarFacturas, miFactura, facturarDesdePanel, notaCreditoDesdePane
 import { actualizarPerfil, misDatos, eliminarCuenta, baja } from "./cuenta.js";
 import { crearSugerencia } from "./sugerencias.js";
 import { pushActivo, suscribir, desuscribir, probar } from "./push.js";
+import { importarDesdePanel, reintentarImportaciones } from "./micorreo.js";
 import { accesoTaller } from './taller-acceso.js';
 import { pedidosTaller } from './taller.js';
 
@@ -72,6 +73,8 @@ async function api(request, env, ctx, pathname) {
     }
     const facturar = pathname.match(/^\/api\/admin\/pedidos\/([0-9a-f-]{36})\/facturar$/);
     if (facturar) return facturarDesdePanel(request, env, ctx, facturar[1]);
+    const micorreo = pathname.match(/^\/api\/admin\/pedidos\/([0-9a-f-]{36})\/micorreo$/);
+    if (micorreo) return importarDesdePanel(request, env, ctx, micorreo[1]);
     const nota = pathname.match(/^\/api\/admin\/pedidos\/([0-9a-f-]{36})\/nota-credito$/);
     if (nota) return notaCreditoDesdePanel(request, env, ctx, nota[1]);
     const cancelar = pathname.match(/^\/api\/pedidos\/([0-9a-f-]{36})\/cancelar$/);
@@ -154,6 +157,7 @@ export default {
       conciliarPendientes(env, ctx).catch((e) => console.error("Conciliación fallida:", e.message)),
       tareaNovedades(env).catch((e) => console.error("Novedades fallidas:", e.message)),
       recordatoriosDePago(env).catch((e) => console.error("Recordatorios de pago fallidos:", e.message)),
+      reintentarImportaciones(env).catch((e) => console.error("Importaciones a MiCorreo fallidas:", e.message)),
       reintentarFacturas(env, ctx, env.SITE_URL || "https://donsticker.com.ar").catch((e) => console.error("Facturas pendientes fallidas:", e.message)),
     ]));
   },

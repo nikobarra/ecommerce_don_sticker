@@ -9,7 +9,9 @@
 import { json, limitarPor, ipDe, fetchExterno } from "./util.js";
 import { tarifaRespaldo, ENVIO } from "./precios.js";
 
-const DIMENSIONES_POR_DEFECTO = { height: 3, width: 18, length: 25 }; // cm, sobre chico de stickers
+// Caja de envío de Don Sticker (cm): se usa para cotizar y para cargar el envío en MiCorreo (worker/src/micorreo.js).
+export const CAJA_ENVIO = { height: 5, width: 11, length: 12 };
+const DIMENSIONES_POR_DEFECTO = CAJA_ENVIO;
 const PESO_MAXIMO = 25000; // gramos, límite de la API de MiCorreo
 const VIDA_TOKEN_MS = 10 * 60 * 1000;
 const VIDA_COTIZACION_S = 3600;
@@ -25,7 +27,7 @@ let tokenEnCurso = null;
 const cotizacionesEnCurso = new Map(); // misma consulta al mismo tiempo: una sola llamada al Correo
 
 export const ambienteCorreo = (env) => (String(env.MICORREO_AMBIENTE || "").toLowerCase() === "produccion" ? "produccion" : "prueba");
-const baseApi = (env) => (env.MICORREO_BASE || (ambienteCorreo(env) === "produccion" ? BASE_PRODUCCION : BASE_PRUEBA)).replace(/\/+$/, "");
+export const baseApi = (env) => (env.MICORREO_BASE || (ambienteCorreo(env) === "produccion" ? BASE_PRODUCCION : BASE_PRUEBA)).replace(/\/+$/, "");
 // El customerId de MiCorreo son 10 dígitos con ceros a la izquierda (ej. 0000567218). Si al cargar el secreto los ceros
 // se pierden (la línea de comandos lo toma como número), el Correo lo rechaza con «Cliente FAP no identificado»: se completan.
 export const idCliente = (env) => {
@@ -37,7 +39,7 @@ export const correoConfigurado = (env) => Boolean(env.MICORREO_USER && env.MICOR
 // La API del Correo corta conexiones y responde 5xx (503, 520) de forma intermitente: se reintenta hasta 3 veces en total,
 // con una pausa corta. Los errores del pedido en sí (400, 401…) no se reintentan.
 const INTENTOS_CORREO = 3;
-async function fetchCorreo(env, url, opciones) {
+export async function fetchCorreo(env, url, opciones) {
   for (let i = 1; ; i++) {
     try {
       const r = await fetchExterno(env, url, opciones);
@@ -49,7 +51,7 @@ async function fetchCorreo(env, url, opciones) {
   }
 }
 
-async function obtenerToken(env, forzar = false) {
+export async function obtenerToken(env, forzar = false) {
   if (!forzar && tokenEnMemoria && tokenEnMemoria.vence > Date.now()) return tokenEnMemoria.valor;
   if (!forzar && tokenEnCurso) return tokenEnCurso;
   tokenEnCurso = (async () => {
@@ -95,8 +97,8 @@ export async function cotizarCorreo(env, ctx, cp, gramos, { antesDeConsultar } =
   if (!correoConfigurado(env)) throw new Error("sin_configurar");
   const ambiente = ambienteCorreo(env);
   const gramosCotizados = Math.min(Math.ceil(gramos / 100) * 100, PESO_MAXIMO); // se agrupa de a 100 g para la caché
-  const clave = `${baseApi(env)}/${env.CP_ORIGEN || "7620"}/${cp}/${gramosCotizados}`;
-  const claveCache = new Request(`https://cache.donsticker/envio-base/${clave}`); // guarda la tarifa SIN recargo: cambiar el recargo vale al instante
+  const clave = `${baseApi(env)}/${env.CP_ORIGEN || "7620"}/${cp}/${gramosCotizados}/${CAJA_ENVIO.length}x${CAJA_ENVIO.width}x${CAJA_ENVIO.height}`;
+  const claveCache = new Request(`https://cache.donsticker/envio-base2/${clave}`); // guarda la tarifa SIN recargo: cambiar el recargo vale al instante
   const recargo = Number(env.RECARGO_PORCENTAJE || 0);
   const conRecargo = (t) => ({ ...t, precio: Math.round(t.precio * (1 + recargo / 100)) });
   const cache = typeof caches !== "undefined" ? caches.default : null;

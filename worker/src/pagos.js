@@ -27,6 +27,7 @@ import { envioDefinitivo } from "./envio.js";
 import { enviarSinFallar, mailCambioEstado, mailAvisoPago, urlSitio } from "./mail.js";
 import { facturarSinFallar } from "./facturacion.js";
 import { avisarCambioDePedido } from "./push.js";
+import { importarSinFallar } from "./micorreo.js";
 
 const API = "https://api.mercadopago.com";
 const vacio = (status = 200, extra = {}) => new Response(null, { status, headers: extra });
@@ -265,6 +266,7 @@ export async function aplicarPago(env, ctx, sitio, pago) {
     const cliente = nueva.user_id ? await env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(nueva.user_id).first() : null;
     if (cliente) await enviarSinFallar(env, ctx, { to: cliente.email, ...mailCambioEstado({ ...nueva, items: JSON.parse(nueva.items_json) }, `${sitio}/cuenta.html`) });
     await avisarCambioDePedido(env, ctx, nueva, { cambioEstado: true, cambioSeg: false });
+    importarSinFallar(env, ctx, fila.id); // carga el envío en MiCorreo (si está activado)
     // Factura oficial (ARCA). Está apagada hasta que se active a propósito; si falla, el cobro y el pedido no se tocan.
     facturarSinFallar(env, ctx, sitio, fila.id);
     return "confirmado";

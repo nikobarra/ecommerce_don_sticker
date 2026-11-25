@@ -25,6 +25,8 @@ export default defineConfig({
 			// (La dirección de la API sale de este valor; ya no hay que tocar MICORREO_BASE.)
 			MICORREO_AMBIENTE: bindings.text("produccion"),
 			CP_ORIGEN: bindings.text("7620"),
+			// Carga automática del envío en MiCorreo al confirmarse el pago (worker/src/micorreo.js). "0" la apaga.
+			MICORREO_IMPORTAR: bindings.text("1"),
 			RECARGO_PORCENTAJE: bindings.text("10"),
 			// --- Mercado Pago. Son SECRETOS: MP_ACCESS_TOKEN y MP_WEBHOOK_SECRET.
 			// Mientras no estén cargados, la web solo ofrece transferencia.

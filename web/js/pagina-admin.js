@@ -206,6 +206,21 @@
     return partes.length ? `<div class="problema-pago" role="group" aria-label="Facturación">${partes.join("")}</div>` : "";
   }
 
+  // ---------- Envío cargado en MiCorreo ----------
+  let micorreoActivo = false;
+  // La API de MiCorreo solo carga el envío: pagarlo (con tu saldo) y bajar el rótulo se hace en «Mis envíos» de MiCorreo.
+  function bloqueMicorreo(p) {
+    if (!micorreoActivo || p.entrega !== "envio" || p.estado === "cancelado") return "";
+    const m = p.micorreo;
+    const conPago = ESTADOS_PAGO_OK.includes(p.estado);
+    if (m && m.estado === "importado") return '<div class="problema-pago" role="group" aria-label="MiCorreo"><p><strong>Envío cargado en MiCorreo.</strong> Falta pagarlo con tu saldo y bajar el rótulo desde «Mis envíos».</p></div>';
+    if (m && m.estado === "error") {
+      return `<div class="problema-pago" role="group" aria-label="MiCorreo"><p class="error"><strong>No se cargó en MiCorreo:</strong> ${esc(m.error)}</p><button class="boton boton--claro" type="button" data-micorreo>${m.permanente ? "Reintentar la carga" : "Reintentar ahora"}</button></div>`;
+    }
+    if (conPago) return '<div class="problema-pago" role="group" aria-label="MiCorreo"><button class="boton boton--claro" type="button" data-micorreo>Enviar a MiCorreo</button></div>';
+    return "";
+  }
+
   async function bajarPdf(pedidoId, tipo) {
     const res = await fetch(`/api/admin/pedidos/${pedidoId}/comprobante${tipo === "nota" ? "?tipo=nota" : ""}`);
     if (!res.ok) { aviso("No pude abrir ese comprobante."); return; }
@@ -258,6 +273,7 @@
         ${p.notas ? `<p>Aclaración: ${esc(p.notas)}</p>` : ""}
         <p><strong>Total: ${pesos(p.total)}</strong>${p.pago === "mercadopago" ? " · Mercado Pago" : " · Transferencia"}</p>
         ${bloqueFactura(p)}
+        ${bloqueMicorreo(p)}
         ${p.problemaPago ? `<div class="problema-pago" role="group" aria-label="Cobro a revisar"><p><strong>Cobro a revisar:</strong> ${esc(PROBLEMAS[p.problemaPago] || p.problemaPago)}</p><button class="boton boton--claro" type="button" data-resolver>Ya lo revisé</button></div>` : ""}
       </div>
       <form data-form novalidate>
@@ -274,6 +290,7 @@
     const cont = $("#pedidos");
     if (!r.ok) { cont.innerHTML = `<p class="error">${esc(r.datos.mensaje || "No pude cargar los pedidos.")}</p>`; return; }
     facturacionActiva = r.datos.facturacionActiva === true;
+    micorreoActivo = r.datos.micorreoActivo === true;
     cont.innerHTML = r.datos.pedidos.length ? r.datos.pedidos.map(tarjeta).join("") : "<p>No hay pedidos en este estado.</p>";
   }
 
@@ -348,6 +365,21 @@
     const r = await api(`/admin/pedidos/${id}/${accion.hasAttribute("data-facturar") ? "facturar" : "nota-credito"}`, { method: "POST", cuerpo });
     ventana(accion.hasAttribute("data-facturar") ? "Facturación" : "Nota de crédito", r.datos.mensaje || "No pude completar la operación.");
     cargar(); cargarFacturas();
+  });
+
+  // Cargar (o reintentar) el envío en MiCorreo desde cada pedido.
+  $("#pedidos").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-micorreo]");
+    if (!b) return;
+    const tarjetaPedido = b.closest("[data-id]");
+    const numero = tarjetaPedido.querySelector(".pedido__cabeza strong")?.textContent || "";
+    b.disabled = true;
+    const textoOriginal = b.textContent;
+    b.textContent = "Cargando…";
+    const r = await api(`/admin/pedidos/${tarjetaPedido.dataset.id}/micorreo`, { method: "POST", cuerpo: {} });
+    ventana("MiCorreo", r.ok ? `${numero}: ${r.datos.mensaje}` : (r.datos.mensaje || "No pude cargar el envío."));
+    b.textContent = textoOriginal;
+    cargar();
   });
 
   $("#pedidos").addEventListener("click", async (e) => {

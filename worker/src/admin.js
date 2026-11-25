@@ -7,6 +7,7 @@ import { usuarioActual, usuarioPublico } from "./auth.js";
 import { pedidoPublico } from "./pedidos.js";
 import { enviarSinFallar, mailCambioEstado, urlSitio } from "./mail.js";
 import { avisarCambioDePedido } from "./push.js";
+import { importarSinFallar, estadoPorPedido, importacionActiva } from "./micorreo.js";
 import { usuarioTaller } from "./taller-acceso.js";
 import { facturacionPorPedido } from "./facturacion.js";
 import { facturacionActiva } from "./arca.js";
@@ -31,9 +32,11 @@ export async function listarPedidos(request, env) {
   const sql = `SELECT o.*, u.email AS customer_email, u.email_verified AS customer_verified FROM orders o LEFT JOIN users u ON u.id = o.user_id ${filtra ? "WHERE o.status = ?" : ""} ORDER BY o.created_at DESC LIMIT 200`;
   const { results } = await (filtra ? env.DB.prepare(sql).bind(estado) : env.DB.prepare(sql)).all();
   const facturacion = await facturacionPorPedido(env);
+  const micorreo = await estadoPorPedido(env);
   return json({
     facturacionActiva: facturacionActiva(env),
-    pedidos: results.map((f) => ({ ...conContenidoDePacks(pedidoPublico(f)), problemaPago: f.payment_issue || "", clienteMail: f.customer_email || null, clienteMailVerificado: Boolean(f.customer_verified), facturacion: facturacion.get(f.id) || null })),
+    micorreoActivo: importacionActiva(env),
+    pedidos: results.map((f) => ({ ...conContenidoDePacks(pedidoPublico(f)), problemaPago: f.payment_issue || "", clienteMail: f.customer_email || null, clienteMailVerificado: Boolean(f.customer_verified), facturacion: facturacion.get(f.id) || null, micorreo: micorreo.get(f.id) || null })),
   });
 }
 
@@ -85,5 +88,7 @@ export async function actualizarPedido(request, env, ctx, id) {
     await enviarSinFallar(env, ctx, { to: cliente.email, ...mailCambioEstado({ ...nueva, items: JSON.parse(nueva.items_json) }, `${urlSitio(env, request)}/cuenta.html`) });
   }
   await avisarCambioDePedido(env, ctx, nueva, { cambioEstado, cambioSeg });
+  // Si el pedido pasa a tener el pago confirmado, el envío se carga solo en MiCorreo (si está activado).
+  if (cambioEstado && ["pago_confirmado", "preparando", "despachado"].includes(nuevoEstado)) importarSinFallar(env, ctx, id);
   return json({ pedido: pedidoPublico(nueva) });
 }
