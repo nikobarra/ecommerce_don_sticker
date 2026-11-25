@@ -96,17 +96,18 @@ export async function cotizarCorreo(env, ctx, cp, gramos, { antesDeConsultar } =
   const ambiente = ambienteCorreo(env);
   const gramosCotizados = Math.min(Math.ceil(gramos / 100) * 100, PESO_MAXIMO); // se agrupa de a 100 g para la caché
   const clave = `${baseApi(env)}/${env.CP_ORIGEN || "7620"}/${cp}/${gramosCotizados}`;
-  const claveCache = new Request(`https://cache.donsticker/envio/${clave}`);
+  const claveCache = new Request(`https://cache.donsticker/envio-base/${clave}`); // guarda la tarifa SIN recargo: cambiar el recargo vale al instante
+  const recargo = Number(env.RECARGO_PORCENTAJE || 0);
+  const conRecargo = (t) => ({ ...t, precio: Math.round(t.precio * (1 + recargo / 100)) });
   const cache = typeof caches !== "undefined" ? caches.default : null;
   const guardada = cache ? await cache.match(claveCache) : null;
-  if (guardada) return { ...(await guardada.json()), ambiente };
+  if (guardada) return { ...conRecargo(await guardada.json()), ambiente };
 
-  if (cotizacionesEnCurso.has(clave)) return { ...(await cotizacionesEnCurso.get(clave)), ambiente };
+  if (cotizacionesEnCurso.has(clave)) return { ...conRecargo(await cotizacionesEnCurso.get(clave)), ambiente };
   const tarea = (async () => {
     if (antesDeConsultar) await antesDeConsultar();
     const t = await pedirTarifa(env, cp, gramosCotizados);
-    const recargo = Number(env.RECARGO_PORCENTAJE || 0);
-    const resultado = { precio: Math.round(t.price * (1 + recargo / 100)), producto: t.productName || "Correo Argentino" };
+    const resultado = { precio: t.price, producto: t.productName || "Correo Argentino" };
     if (cache && ctx) {
       const respuesta = new Response(JSON.stringify(resultado), { headers: { "cache-control": `public, max-age=${VIDA_COTIZACION_S}` } });
       ctx.waitUntil(cache.put(claveCache, respuesta));
@@ -114,7 +115,7 @@ export async function cotizarCorreo(env, ctx, cp, gramos, { antesDeConsultar } =
     return resultado;
   })().finally(() => cotizacionesEnCurso.delete(clave));
   cotizacionesEnCurso.set(clave, tarea);
-  return { ...(await tarea), ambiente };
+  return { ...conRecargo(await tarea), ambiente };
 }
 
 // Costo de envío para un pedido: primero el Correo (solo si está en PRODUCCIÓN) y, si no responde o no está

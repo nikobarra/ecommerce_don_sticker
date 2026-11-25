@@ -25,7 +25,7 @@ export default defineConfig({
 			// (La dirección de la API sale de este valor; ya no hay que tocar MICORREO_BASE.)
 			MICORREO_AMBIENTE: bindings.text("produccion"),
 			CP_ORIGEN: bindings.text("7620"),
-			RECARGO_PORCENTAJE: bindings.text("0"),
+			RECARGO_PORCENTAJE: bindings.text("10"),
 			// --- Mercado Pago. Son SECRETOS: MP_ACCESS_TOKEN y MP_WEBHOOK_SECRET.
 			// Mientras no estén cargados, la web solo ofrece transferencia.
 			// MP_DIAGNOSTICO en "1" le muestra a quien hizo el pedido el motivo que devuelve Mercado Pago cuando
