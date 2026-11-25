@@ -23,7 +23,7 @@ export default defineConfig({
 			// tratan como NO definitivas: se muestran como estimadas y bloquean el cobro con Mercado Pago.
 			// Para vender de verdad: cargar las credenciales de producción como secretos y poner "produccion".
 			// (La dirección de la API sale de este valor; ya no hay que tocar MICORREO_BASE.)
-			MICORREO_AMBIENTE: bindings.text("prueba"),
+			MICORREO_AMBIENTE: bindings.text("produccion"),
 			CP_ORIGEN: bindings.text("7620"),
 			RECARGO_PORCENTAJE: bindings.text("0"),
 			// --- Mercado Pago. Son SECRETOS: MP_ACCESS_TOKEN y MP_WEBHOOK_SECRET.

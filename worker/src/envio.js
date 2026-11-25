@@ -57,7 +57,11 @@ async function pedirTarifa(env, cp, gramos, intento = 0) {
     }),
   });
   if (r.status === 401 && intento === 0) return pedirTarifa(env, cp, gramos, 1); // token vencido
-  if (!r.ok) throw new Error(`rates ${r.status}`);
+  if (!r.ok) {
+    // El motivo que informa el Correo (sin credenciales ni datos de clientes) queda en el registro para poder diagnosticar.
+    const motivo = (await r.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 200);
+    throw new Error(`rates ${r.status}${motivo ? `: ${motivo}` : ""}`);
+  }
   const datos = await r.json();
   const tarifas = (datos.rates || []).filter((t) => typeof t.price === "number");
   if (!tarifas.length) throw new Error("sin tarifas");
