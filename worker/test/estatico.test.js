@@ -265,9 +265,10 @@ test("la sección de emprendedores muestra cifras que coinciden con los precios 
     const fila = metas.find((f) => f[0] === etq);
     assert.deepEqual(fila.slice(1), [1000, 1200, 1500].map((v) => miles(n * v - p100)), etq);
   }
-  const zona1 = 14000;
+  const envioEjemplo = 10000; // el texto usa un envío de unos $10.000 (la cotización real del Correo ronda $9.000 a $12.000)
   assert.match(bloque, new RegExp(String.raw`con ${Math.ceil(p100 / 1000)} stickers a \$1\.000`));
-  assert.match(bloque, new RegExp(String.raw`vendiendo ${Math.ceil((p100 + zona1) / 1000)}\.`));
+  assert.match(bloque, new RegExp(String.raw`vendiendo ${Math.ceil((p100 + envioEjemplo) / 1000)}\.`));
+  assert.match(bloque, /un envío de unos \$10\.000/);
   assert.ok(TIENDA.puntosDeEntrega.includes("Balcarce") && TIENDA.puntosDeEntrega.includes("Mar del Plata"));
   assert.match(bloque, /Balcarce o Mar del Plata/);
   assert.ok(!/garantiz/i.test(bloque.replace(/no una promesa/i, "")), "no prometer ganancias");
